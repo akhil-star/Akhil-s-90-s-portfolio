@@ -68,7 +68,7 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             transition: all 0.15s cubic-bezier(0.39, 0.575, 0.565, 1);
-            z-index: 9999;
+            z-index: 11000; /* above modals and overlays */
             mix-blend-mode: difference;
         }
 
@@ -81,7 +81,13 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             transition: all 0.1s ease;
-            z-index: 9998;
+            z-index: 10999; /* just under main cursor */
+        }
+
+        /* Ensure overlays show the native OS cursor when open */
+        .modal,
+        #game-overlay {
+            cursor: default;
         }
 
         .cursor.hover {
@@ -582,7 +588,7 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            top: 0;
+            top: 28px; /* place year below the icon */
             background: var(--dark);
             padding: 8px 20px;
             border-radius: 50px;
@@ -590,12 +596,13 @@
             font-weight: 700;
             font-size: 14px;
             color: var(--primary);
-            z-index: 10;
+            z-index: 11; /* sit under the icon */
         }
 
         .timeline-icon {
             position: absolute;
             left: 50%;
+            top: -6px; /* place icon slightly above the year */
             transform: translate(-50%, -50%);
             width: 50px;
             height: 50px;
@@ -606,7 +613,7 @@
             justify-content: center;
             font-size: 24px;
             border: 4px solid var(--dark);
-            z-index: 10;
+            z-index: 13; /* ensure icon is above the year */
             animation: pulse 2s infinite;
         }
 
@@ -1116,10 +1123,10 @@
 
         .game-close {
             position: absolute;
-            top: -50px;
-            right: 0;
-            width: 40px;
-            height: 40px;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--glass);
             border: 1px solid var(--glass-border);
@@ -1130,12 +1137,29 @@
             transition: all 0.3s ease;
             font-size: 24px;
             color: var(--text);
+            z-index: 10101; /* sit above game content */
         }
 
         .game-close:hover {
             background: var(--primary);
             color: var(--dark);
             transform: rotate(90deg);
+        }
+
+        .game-close-btn {
+            padding: 12px 28px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            border-radius: 40px;
+            font-weight: 700;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+
+        .game-close-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
         }
 
         .game-over-screen {
@@ -1309,11 +1333,15 @@
             .timeline-year {
                 left: 20px;
                 transform: translateX(0);
+                top: 40px; /* year sits below the icon on mobile */
+                z-index: 11;
             }
 
             .timeline-icon {
                 left: 20px;
                 transform: translate(0, -50%);
+                top: 8px; /* icon sits above the year on mobile */
+                z-index: 13;
             }
 
             .projects-grid {
@@ -1947,7 +1975,10 @@
         <div class="game-over-screen" id="game-over">
             <div class="game-over-title">GAME OVER</div>
             <div class="game-final-score">Final Score: <span id="final-score">0</span></div>
-            <button class="game-restart-btn" onclick="restartGame()">Play Again</button>
+            <div>
+                <button class="game-restart-btn" onclick="restartGame()">Play Again</button>
+                <button class="game-close-btn" onclick="closeGame()">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -2199,6 +2230,24 @@ function closeGame() {
     }
 }
 
+// Allow clicking the overlay background to close the game
+const _gameOverlayEl = document.getElementById('game-overlay');
+if (_gameOverlayEl) {
+    _gameOverlayEl.addEventListener('click', e => {
+        if (e.target === _gameOverlayEl) closeGame();
+    });
+}
+
+// Close game with Escape key
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        const el = document.getElementById('game-overlay');
+        if (el && el.classList.contains('active')) {
+            closeGame();
+        }
+    }
+});
+
 function initGame() {
     // Reset game state
     score = 0;
@@ -2359,6 +2408,14 @@ function gameLoop() {
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
         ctx.shadowBlur = 0;
         
+        // If enemy reaches the bottom edge, end the game
+        if (enemy.y + enemy.height >= canvas.height) {
+            // explosion for effect
+            createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, '#FF6B9D');
+            gameOver();
+            return false;
+        }
+
         // Check collision with bullets
         let hit = false;
         bullets = bullets.filter(bullet => {
@@ -2387,20 +2444,14 @@ function gameLoop() {
             return true;
         });
         
-        // Check collision with player
+        // Check collision with player -> immediate game over
         if (enemy.x < player.x + player.width &&
             enemy.x + enemy.width > player.x &&
             enemy.y < player.y + player.height &&
             enemy.y + enemy.height > player.y) {
-            
+
             createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, '#FFD93D');
-            lives--;
-            updateGameUI();
-            
-            if (lives <= 0) {
-                gameOver();
-            }
-            
+            gameOver();
             return false;
         }
         
