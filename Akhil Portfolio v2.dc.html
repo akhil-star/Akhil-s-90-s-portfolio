@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F1EC;color:#111110;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#111110;text-decoration:none}
+a:hover{color:#E0362C}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<div style="position:relative;background:#F2F1EC;color:#111110">
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(20px,4vw,56px);background:rgba(242,241,236,.9);backdrop-filter:blur(8px);border-bottom:1px solid #DAD8D0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase">
+  <a href="#top" style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;background:#E0362C"></span>Akhil</a>
+  <nav style="display:flex;gap:24px">
+    <a href="#work">Work</a>
+    <a href="#mind">Art</a>
+    <a href="#connect">Contact</a>
+  </nav>
+  <div style="position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:#E0362C;transform-origin:left;transform:{{ docBar }}"></div>
+</header>
+
+<section id="top" ref="{{ heroRef }}" data-screen-label="01 Hello" style="position:relative;height:260vh">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:96px;display:flex;flex-direction:column;gap:18px">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(01) Hello</span>
+      <h1 style="margin:0;font-weight:500;font-size:clamp(44px,8.4vw,140px);line-height:.92;letter-spacing:-.055em">
+        <span style="display:block;overflow:hidden"><span style="display:block;transform:{{ hero.t1 }}">Hi, I'm Akhil.</span></span>
+        <span style="display:block;overflow:hidden;color:#A4A29A"><span style="display:block;transform:{{ hero.t2 }}">Your neighbourhood designer<span style="color:#E0362C">.</span></span></span>
+      </h1>
+    </div>
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:8vh;height:36vh;border-bottom:2px solid #111110">
+      <div style="position:absolute;inset:0;overflow:hidden">
+        <sc-for list="{{ hero.houses }}" as="hs" hint-placeholder-count="0">
+          <div style="position:absolute;bottom:0;left:{{ hs.left }};width:{{ hs.width }};height:{{ hs.height }};transform:{{ hs.transform }};background:{{ hs.bg }};clip-path:polygon(50% 0,100% 28%,100% 100%,0 100%,0 28%)">
+            <div style="position:absolute;left:36%;top:46%;width:28%;height:16%;background:{{ hs.win }}"></div>
+          </div>
+        </sc-for>
+        <div style="position:absolute;bottom:2px;left:{{ hero.walkX }};width:16px;height:16px;border-radius:50%;background:#E0362C;transform:{{ hero.walkT }};opacity:{{ hero.walkOp }}"></div>
+      </div>
+      <div style="position:absolute;left:67%;bottom:calc(100% + 10px);transform:translateX(-50%);opacity:{{ hero.tagOp }};display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;white-space:nowrap">
+        <span style="padding:6px 10px;background:#111110;color:#F2F1EC">Akhil · Designer</span>
+        <span style="width:1px;height:18px;background:#111110"></span>
+      </div>
+    </div>
+    <div style="position:absolute;right:clamp(20px,4vw,56px);bottom:calc(8vh - 34px);font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65;opacity:{{ hero.hintOp }}">Scroll ↓</div>
+  </div>
+</section>
+
+<section ref="{{ stealRef }}" data-screen-label="02 Worth stealing" style="position:relative;height:340vh;border-top:1px solid #DAD8D0">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <span style="position:absolute;left:clamp(20px,4vw,56px);top:84px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(02) Worth stealing</span>
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:116px">
+      <h2 style="position:absolute;left:0;top:0;margin:0;max-width:22ch;font-weight:500;font-size:clamp(26px,3.6vw,56px);line-height:1.02;letter-spacing:-.04em;opacity:{{ steal.c1 }};transform:{{ steal.c1t }}">I've built brands, apps and websites worth stealing.</h2>
+      <h2 style="position:absolute;left:0;top:0;margin:0;max-width:22ch;font-weight:500;font-size:clamp(26px,3.6vw,56px);line-height:1.02;letter-spacing:-.04em;opacity:{{ steal.c2 }};transform:{{ steal.c2t }}">But they shouldn't be stolen <span style="color:#E0362C">that easily.</span></h2>
+      <h2 style="position:absolute;left:0;top:0;margin:0;max-width:26ch;font-weight:500;font-size:clamp(26px,3.6vw,56px);line-height:1.02;letter-spacing:-.04em;opacity:{{ steal.c3 }};transform:{{ steal.c3t }}">So I take care of privacy, data structure and regulation. <span style="color:#A4A29A">Even for the AI that handles your data.</span></h2>
+    </div>
+    <div style="position:absolute;left:50%;top:62%;transform:translate(-50%,-50%);width:min(92vw,1100px);height:min(50vh,500px)">
+      <div style="position:absolute;inset:2% 1%;border:3px solid #E0362C;opacity:{{ steal.shieldOp }};transform:{{ steal.shieldT }}">
+        <div style="position:absolute;left:50%;top:-3px;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center">
+          <div style="width:30px;height:24px;border:4px solid #E0362C;border-bottom:none;border-radius:16px 16px 0 0"></div>
+          <div style="width:44px;height:30px;background:#E0362C"></div>
+        </div>
+        <span style="position:absolute;right:10px;bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#E0362C;text-transform:uppercase;letter-spacing:.04em">Protected</span>
+      </div>
+      <div style="position:absolute;left:22%;top:50%;transform:{{ steal.brandT }};opacity:{{ steal.artOp }};display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="width:clamp(80px,11vw,130px);aspect-ratio:1;border-radius:50%;background:#111110;display:flex;align-items:center;justify-content:center"><div style="width:34%;height:34%;background:#E0362C"></div></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">Brand</span>
+      </div>
+      <div style="position:absolute;left:50%;top:50%;transform:{{ steal.appT }};opacity:{{ steal.artOp }};display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="width:clamp(72px,8vw,106px);aspect-ratio:9 / 17;border:3px solid #111110;border-radius:16px;background:#FBFAF7;display:flex;flex-direction:column;gap:8px;padding:16px 10px 10px">
+          <div style="width:36%;height:4px;background:#111110;align-self:center;border-radius:2px"></div>
+          <div style="height:28%;background:#E4E2DB"></div>
+          <div style="height:5px;width:80%;background:#111110"></div>
+          <div style="height:5px;width:60%;background:#A4A29A"></div>
+          <div style="margin-top:auto;height:16%;background:#E0362C;border-radius:4px"></div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">App</span>
+      </div>
+      <div style="position:absolute;left:78%;top:50%;transform:{{ steal.webT }};opacity:{{ steal.artOp }};display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="width:clamp(130px,19vw,240px);aspect-ratio:3 / 2;border:3px solid #111110;background:#FBFAF7;display:flex;flex-direction:column">
+          <div style="display:flex;gap:5px;padding:7px;border-bottom:2px solid #111110"><span style="width:7px;height:7px;border-radius:50%;background:#111110"></span><span style="width:7px;height:7px;border-radius:50%;background:#111110"></span><span style="width:7px;height:7px;border-radius:50%;background:#E0362C"></span></div>
+          <div style="flex:1;display:grid;grid-template-columns:2fr 1fr;gap:8px;padding:10px">
+            <div style="background:#E4E2DB"></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="height:5px;background:#111110"></div><div style="height:5px;width:70%;background:#A4A29A"></div><div style="height:5px;width:85%;background:#A4A29A"></div></div>
+          </div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">Website</span>
+      </div>
+      <div style="position:absolute;left:50%;bottom:calc(50% + 108px);transform:{{ steal.clawT }};display:flex;flex-direction:column;align-items:center">
+        <div style="width:3px;height:100vh;background:#111110"></div>
+        <div style="width:76px;height:7px;background:#111110"></div>
+        <div style="width:76px;display:flex;justify-content:space-between"><div style="width:7px;height:30px;background:#111110"></div><div style="width:7px;height:30px;background:#111110"></div></div>
+      </div>
+      <sc-for list="{{ steal.cells }}" as="cl" hint-placeholder-count="0">
+        <div style="position:absolute;left:{{ cl.left }};top:{{ cl.top }};transform:{{ cl.transform }};opacity:{{ cl.opacity }};width:10%;padding:9px 2px;text-align:center;border:1.5px solid #111110;background:{{ cl.bg }};color:{{ cl.fg }};font-family:'IBM Plex Mono',monospace;font-size:clamp(9px,.9vw,12px);white-space:nowrap;overflow:hidden">{{ cl.label }}</div>
+      </sc-for>
+      <div style="position:absolute;left:67%;top:50%;width:14%;height:2px;background:#111110;transform-origin:left;transform:{{ steal.lineT }}"></div>
+      <div style="position:absolute;left:74%;top:50%;width:18px;height:18px;background:#E0362C;transform:{{ steal.gateT }}"></div>
+      <span style="position:absolute;left:74%;top:calc(50% + 22px);transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#E0362C;opacity:{{ steal.aiOp }}">policy</span>
+      <div style="position:absolute;left:88%;top:50%;width:clamp(64px,8vw,100px);aspect-ratio:1;border-radius:50%;background:#111110;color:#F2F1EC;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:14px;transform:{{ steal.aiT }};opacity:{{ steal.aiOp }}">AI</div>
+    </div>
+  </div>
+</section>
+
+<section ref="{{ focusRef }}" data-screen-label="03 Focus" style="position:relative;height:380vh;border-top:1px solid #DAD8D0">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <span style="position:absolute;left:clamp(20px,4vw,56px);top:84px;z-index:2;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(03) What I focus on</span>
+    <div style="position:absolute;right:clamp(20px,4vw,56px);top:84px;z-index:2;display:flex;gap:6px">
+      <span style="width:28px;height:3px;background:#111110;opacity:{{ focus.d0 }}"></span>
+      <span style="width:28px;height:3px;background:#111110;opacity:{{ focus.d1 }}"></span>
+      <span style="width:28px;height:3px;background:#111110;opacity:{{ focus.d2 }}"></span>
+    </div>
+    <div style="display:flex;width:300vw;height:100%;transform:{{ focus.trackT }}">
+
+      <div style="width:100vw;height:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));align-content:center;align-items:center;gap:32px 48px;padding:120px clamp(20px,4vw,56px) 40px">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#E0362C">A</span>
+          <h2 style="margin:0;font-weight:500;font-size:clamp(40px,6vw,96px);letter-spacing:-.055em;line-height:.9">High-stakes UX</h2>
+          <p style="margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.4;color:#3E3D39;max-width:34ch;text-wrap:pretty">Healthcare, legal, money. Where one wrong tap costs more than a click, so the guardrails are designed in.</p>
+        </div>
+        <div style="position:relative;height:min(46vh,420px)">
+          <div style="position:absolute;left:8%;top:38%;width:4px;height:62%;background:#111110"></div>
+          <div style="position:absolute;right:8%;top:38%;width:4px;height:62%;background:#111110"></div>
+          <div style="position:absolute;left:8%;right:8%;top:38%;height:3px;background:#111110"></div>
+          <div style="position:absolute;left:12%;width:76%;top:66%;height:24%;background-image:linear-gradient(#111110 1px,transparent 1px),linear-gradient(90deg,#111110 1px,transparent 1px);background-size:22px 22px;border-right:1px solid #111110;border-bottom:1px solid #111110;clip-path:{{ focus.netClip }}"></div>
+          <div style="position:absolute;left:{{ focus.ballX }};top:38%;width:36px;height:36px;border-radius:50%;background:#E0362C;transform:translate(-50%,-100%)"></div>
+          <span style="position:absolute;left:12%;top:calc(90% + 10px);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">Guardrails</span>
+          <span style="position:absolute;left:{{ focus.ballX }};top:calc(38% - 64px);transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">User</span>
+        </div>
+      </div>
+
+      <div style="width:100vw;height:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));align-content:center;align-items:center;gap:32px 48px;padding:120px clamp(20px,4vw,56px) 40px">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#E0362C">B</span>
+          <h2 style="margin:0;font-weight:500;font-size:clamp(40px,6vw,96px);letter-spacing:-.055em;line-height:.9">Clean UI</h2>
+          <p style="margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.4;color:#3E3D39;max-width:34ch;text-wrap:pretty">Everything finds its place. Nothing on screen that doesn't earn it.</p>
+        </div>
+        <div style="position:relative;height:min(46vh,420px)">
+          <sc-for list="{{ focus.ui }}" as="b" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ b.left }};top:{{ b.top }};width:{{ b.width }};height:{{ b.height }};transform:{{ b.transform }};border:2px solid #111110;background:{{ b.bg }}"></div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="width:100vw;height:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));align-content:center;align-items:center;gap:32px 48px;padding:120px clamp(20px,4vw,56px) 40px">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#E0362C">C</span>
+          <h2 style="margin:0;font-weight:500;font-size:clamp(40px,6vw,96px);letter-spacing:-.055em;line-height:.9">AI, used right</h2>
+          <p style="margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.4;color:#3E3D39;max-width:34ch;text-wrap:pretty">A tool, not a shortcut. A human in the loop, and the data kept in bounds.</p>
+        </div>
+        <div style="position:relative;height:min(46vh,420px)">
+          <div style="position:absolute;inset:6%;border:2px dashed #111110"></div>
+          <span style="position:absolute;left:6%;top:calc(6% - 22px);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">Boundary</span>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+            <line x1="24%" y1="50%" x2="{{ focus.aiX }}" y2="{{ focus.aiY }}" stroke="#111110" stroke-width="2"></line>
+          </svg>
+          <div style="position:absolute;left:24%;top:50%;width:72px;height:72px;background:#111110;transform:translate(-50%,-50%)"></div>
+          <span style="position:absolute;left:24%;top:calc(50% + 48px);transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65;text-transform:uppercase">Human</span>
+          <div style="position:absolute;left:{{ focus.aiX }};top:{{ focus.aiY }};width:72px;height:72px;border-radius:50%;background:#E0362C;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:14px;transform:translate(-50%,-50%)">AI</div>
+          <div style="position:absolute;left:64%;top:calc(50% + 52px);transform:translateX(-50%);opacity:{{ focus.checkOp }};display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;white-space:nowrap"><span style="width:12px;height:12px;background:#111110"></span>Reviewed</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section ref="{{ toolsRef }}" data-screen-label="04 Toolkit" style="position:relative;height:300vh;border-top:1px solid #DAD8D0">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div style="position:absolute;left:clamp(20px,4vw,56px);top:84px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(04) Toolkit</div>
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A4A29A;opacity:{{ tl.silenceOp }}">( silence )</div>
+    <sc-for list="{{ tl.tools }}" as="t" hint-placeholder-count="0">
+      <div style="position:absolute;left:{{ t.left }};top:{{ t.top }};transform:{{ t.transform }};opacity:{{ t.opacity }};width:{{ t.width }};display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:14px 16px;background:#FBFAF7;border:1px solid #111110">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65">{{ t.num }}</span>
+        <span style="font-size:clamp(17px,1.6vw,22px);font-weight:500;letter-spacing:-.02em">{{ t.name }}</span>
+      </div>
+    </sc-for>
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:48px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;opacity:{{ tl.orgOp }}">
+      <p style="margin:0;font-size:clamp(26px,3.4vw,52px);font-weight:500;letter-spacing:-.04em;line-height:1">Tools in their place.<br><span style="color:#A4A29A">Data in its place.</span></p>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">08 tools / 1 system</span>
+    </div>
+  </div>
+</section>
+
+<section id="work" ref="{{ workRef }}" data-screen-label="05 Case studies" style="position:relative;height:560vh;border-top:1px solid #111110">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:76px;display:flex;justify-content:space-between;align-items:baseline;gap:20px">
+      <h2 style="margin:0;font-weight:500;font-size:clamp(28px,3.4vw,48px);letter-spacing:-.04em">Case studies</h2>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">{{ work.counter }}</span>
+    </div>
+
+    <article data-screen-label="Case 01 Tachyon Care" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:140px;bottom:3vh;transform-origin:top center;transform:{{ work.t0 }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;padding:24px;background:#FBFAF7;border:1px solid #111110;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">01 / 05</span><span style="color:#6B6A65">Healthcare · App + Web</span></div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(38px,5vw,84px);letter-spacing:-.055em;line-height:.9">Tachyon Care</h3>
+          <p style="margin:0;font-size:17px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">A geriatric care app and web platform. Built for unsteady hands, low vision and the families who care for them.</p>
+        </div>
+      </div>
+      <div style="position:relative;min-height:220px;background:#F2F1EC">
+        <div style="position:absolute;left:{{ work.tcBigX }};top:32%;width:min(22%,120px);aspect-ratio:1;border-radius:50%;background:#111110;transform:translate(-50%,-50%)"></div>
+        <div style="position:absolute;left:{{ work.tcSmallX }};top:36%;width:min(15%,84px);aspect-ratio:1;border-radius:50%;border:3px solid #111110;background:#FBFAF7;transform:translate(-50%,-50%)"></div>
+        <div style="position:absolute;left:50%;top:18%;width:22px;height:22px;border-radius:50%;background:#E0362C;transform:{{ work.tcHeartT }}"></div>
+        <div style="position:absolute;left:14%;right:14%;top:60%;height:11%;border-radius:999px;background:#111110;color:#F2F1EC;display:flex;align-items:center;padding:0 18px;font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:{{ work.tcB0 }}">Call family</div>
+        <div style="position:absolute;left:14%;right:14%;top:73%;height:11%;border-radius:999px;border:2px solid #111110;display:flex;align-items:center;padding:0 18px;font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:{{ work.tcB1 }}">Medication</div>
+        <div style="position:absolute;left:14%;right:14%;top:86%;height:11%;border-radius:999px;background:#E0362C;color:#FFFFFF;display:flex;align-items:center;padding:0 18px;font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:{{ work.tcB2 }}">SOS</div>
+      </div>
+      <div style="position:absolute;inset:0;background:#111110;pointer-events:none;opacity:{{ work.d0 }}"></div>
+    </article>
+
+    <article data-screen-label="Case 02 Casey" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:140px;bottom:3vh;transform-origin:top center;transform:{{ work.t1 }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;padding:24px;background:#111110;color:#F2F1EC;border:1px solid #111110;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#FF5A4E">02 / 05</span><span style="color:#A4A29A">Legal · Product</span></div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(38px,5vw,84px);letter-spacing:-.055em;line-height:.9">Casey</h3>
+          <p style="margin:0;font-size:17px;line-height:1.4;color:#CFCDC6;max-width:38ch;text-wrap:pretty">Legal workflows where one wrong click can cost a case. Privileged data, strict structure, no guesswork.</p>
+        </div>
+      </div>
+      <div style="position:relative;min-height:220px;background:#1B1B19">
+        <div style="position:absolute;left:50%;top:24%;bottom:12%;width:5px;background:#F2F1EC;transform:translateX(-50%)"></div>
+        <div style="position:absolute;left:38%;right:38%;bottom:12%;height:5px;background:#F2F1EC"></div>
+        <div style="position:absolute;left:14%;right:14%;top:24%;height:5px;background:#F2F1EC;transform:{{ work.csBeamT }}">
+          <div style="position:absolute;left:0;top:0;transform:{{ work.csPanT }};transform-origin:top center;display:flex;flex-direction:column;align-items:center;margin-left:-45px;width:90px">
+            <div style="width:2px;height:54px;background:#F2F1EC"></div>
+            <div style="position:relative;width:90px;height:40px;border:3px solid #F2F1EC;border-top:none;border-radius:0 0 50px 50px">
+              <div style="position:absolute;left:24px;bottom:16px;width:40px;height:8px;background:#F2F1EC"></div>
+              <div style="position:absolute;left:28px;bottom:26px;width:34px;height:8px;background:#A4A29A"></div>
+            </div>
+          </div>
+          <div style="position:absolute;right:0;top:0;transform:{{ work.csPanT }};transform-origin:top center;display:flex;flex-direction:column;align-items:center;margin-right:-45px;width:90px">
+            <div style="width:2px;height:54px;background:#F2F1EC"></div>
+            <div style="position:relative;width:90px;height:40px;border:3px solid #F2F1EC;border-top:none;border-radius:0 0 50px 50px">
+              <div style="position:absolute;left:33px;bottom:12px;width:22px;height:22px;background:#FF5A4E"></div>
+            </div>
+          </div>
+        </div>
+        <span style="position:absolute;left:50%;top:10%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A4A29A;text-transform:uppercase;opacity:{{ work.csLabel }}">In balance</span>
+      </div>
+      <div style="position:absolute;inset:0;background:#000000;pointer-events:none;opacity:{{ work.d1 }}"></div>
+    </article>
+
+    <article data-screen-label="Case 03 Shift Partner" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:140px;bottom:3vh;transform-origin:top center;transform:{{ work.t2 }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;padding:24px;background:#E0362C;color:#FFFFFF;border:1px solid #E0362C;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span>03 / 05</span><span>Redesign · Usability</span></div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(38px,5vw,84px);letter-spacing:-.055em;line-height:.9">Shift Partner</h3>
+          <p style="margin:0;font-size:17px;line-height:1.4;max-width:38ch;text-wrap:pretty">An existing product, taken apart and rebuilt. Same purpose, far better usability.</p>
+        </div>
+      </div>
+      <div style="position:relative;min-height:220px;background:rgba(255,255,255,.08)">
+        <span style="position:absolute;left:14px;top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase">{{ work.spLabel }}</span>
+        <sc-for list="{{ work.spBlocks }}" as="sb" hint-placeholder-count="0">
+          <div style="position:absolute;left:{{ sb.left }};top:{{ sb.top }};width:20%;height:20%;transform:{{ sb.transform }};background:{{ sb.bg }};border:2px solid #FFFFFF"></div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;inset:0;background:#111110;pointer-events:none;opacity:{{ work.d2 }}"></div>
+    </article>
+
+    <article data-screen-label="Case 04 Cardiabridge" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:140px;bottom:3vh;transform-origin:top center;transform:{{ work.t3 }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;padding:24px;background:#FBFAF7;border:1px solid #111110;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">04 / 05</span><span style="color:#6B6A65">Branding · Identity</span></div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(38px,5vw,84px);letter-spacing:-.055em;line-height:.9">Cardiabridge</h3>
+          <p style="margin:0;font-size:17px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">A brand identity built to earn trust in cardiac care. Calm, clinical, still human.</p>
+        </div>
+      </div>
+      <div style="position:relative;min-height:220px;background:#F2F1EC;overflow:hidden">
+        <div style="position:absolute;left:15%;top:30%;width:70%;height:80%;border:4px solid #111110;border-radius:50%;clip-path:{{ work.cbClip }}"></div>
+        <div style="position:absolute;left:15%;top:70%;width:min(16%,80px);aspect-ratio:1;border-radius:50%;background:#111110;transform:translate(-50%,-50%)"></div>
+        <div style="position:absolute;left:85%;top:70%;width:min(16%,80px);aspect-ratio:1;border-radius:50%;background:#E0362C;transform:translate(-50%,-50%)"></div>
+        <div style="position:absolute;left:{{ work.cbDotX }};top:{{ work.cbDotY }};width:16px;height:16px;border-radius:50%;background:#E0362C;transform:translate(-50%,-50%);opacity:{{ work.cbDotOp }}"></div>
+      </div>
+      <div style="position:absolute;inset:0;background:#111110;pointer-events:none;opacity:{{ work.d3 }}"></div>
+    </article>
+
+    <article data-screen-label="Case 05 IDIM" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:140px;bottom:3vh;transform-origin:top center;transform:{{ work.t4 }};display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px;padding:24px;background:#E9E7E0;border:1px solid #111110;overflow:hidden">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">05 / 05</span><span style="color:#6B6A65">Category</span></div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(38px,5vw,84px);letter-spacing:-.055em;line-height:.9">IDIM</h3>
+          <p style="margin:0;font-size:17px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">One line on what IDIM is and what you changed.</p>
+        </div>
+      </div>
+      <div style="position:relative;min-height:220px;background:#DFDDD5">
+        <sc-for list="{{ work.idSquares }}" as="sq" hint-placeholder-count="0">
+          <div style="position:absolute;left:50%;top:50%;width:{{ sq.size }};aspect-ratio:1;max-height:{{ sq.size }};border:2px solid #111110;background:{{ sq.bg }};transform:{{ sq.transform }}"></div>
+        </sc-for>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="mind" ref="{{ mindRef }}" data-screen-label="06 Creative mind" style="position:relative;height:300vh;border-top:1px solid #111110">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <span style="position:absolute;left:clamp(20px,4vw,56px);top:84px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(05) The creative mind</span>
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);top:116px">
+      <h2 style="position:absolute;left:0;top:0;margin:0;font-weight:500;font-size:clamp(34px,5vw,80px);letter-spacing:-.05em;line-height:.95;opacity:{{ mind.capA }}">And then, the creative mind.</h2>
+      <h2 style="position:absolute;left:0;top:0;margin:0;font-weight:500;font-size:clamp(34px,5vw,80px);letter-spacing:-.05em;line-height:.95;opacity:{{ mind.capB }}">Off the clock, <span style="color:#A4A29A">on the canvas.</span></h2>
+    </div>
+    <div style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:min(90vw,1000px);height:60vh">
+      <div style="position:absolute;left:50%;top:50%;width:min(36vh,300px);aspect-ratio:1;border-radius:50%;border:2px solid #111110;transform:{{ mind.headT }};opacity:{{ mind.headOp }}"></div>
+      <sc-for list="{{ mind.shapes }}" as="sh" hint-placeholder-count="0">
+        <div onClick="{{ sh.onClick }}" style="position:absolute;left:{{ sh.left }};top:{{ sh.top }};width:{{ sh.width }};height:{{ sh.height }};transform:{{ sh.transform }};opacity:{{ sh.opacity }};border-radius:{{ sh.radius }};clip-path:{{ sh.clip }};background:{{ sh.bg }};border:{{ sh.border }};box-shadow:{{ sh.shadow }};cursor:{{ sh.cursor }};display:flex;align-items:flex-end;padding:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65">{{ sh.label }}</div>
+      </sc-for>
+    </div>
+    <button onClick="{{ openGallery }}" style="position:absolute;left:50%;bottom:4vh;transform:translateX(-50%);opacity:{{ mind.btnOp }};pointer-events:{{ mind.btnPe }};display:flex;align-items:center;gap:40px;padding:16px 22px;border:1px solid #111110;background:#111110;color:#F2F1EC;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer" style-hover="background:#E0362C;border-color:#E0362C">Enter the gallery<span>→</span></button>
+  </div>
+</section>
+
+<section id="connect" ref="{{ connectRef }}" data-screen-label="07 Connect" style="padding:96px clamp(20px,4vw,56px) 32px;background:#111110;color:#F2F1EC;display:flex;flex-direction:column;gap:64px;overflow:hidden">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#A4A29A">(06) Connect</span>
+  <h2 style="margin:0;font-weight:500;font-size:clamp(56px,12vw,200px);letter-spacing:-.06em;line-height:.85;transform:{{ con.headT }}">Let's connect<span style="color:#E0362C">.</span></h2>
+  <div style="display:flex;flex-direction:column">
+    <a href="https://www.linkedin.com/" target="_blank" style="position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em;opacity:{{ con.r0 }};transform:{{ con.r0t }}" style-hover="color:#FF5A4E"><span style="position:absolute;left:0;right:0;top:0;height:1px;background:#3A3936;transform-origin:left;transform:{{ con.l0 }}"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">A</span><span>LinkedIn</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">↗</span></a>
+    <a href="#" download="" style="position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em;opacity:{{ con.r1 }};transform:{{ con.r1t }}" style-hover="color:#FF5A4E"><span style="position:absolute;left:0;right:0;top:0;height:1px;background:#3A3936;transform-origin:left;transform:{{ con.l1 }}"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">B</span><span>Résumé</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">PDF ↓</span></a>
+    <a href="mailto:hello@akhil.design" style="position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em;opacity:{{ con.r2 }};transform:{{ con.r2t }}" style-hover="color:#FF5A4E"><span style="position:absolute;left:0;right:0;top:0;height:1px;background:#3A3936;transform-origin:left;transform:{{ con.l2 }}"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">C</span><span>hello@akhil.design</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">Mail →</span></a>
+    <a href="mailto:hello@akhil.design?subject=Phone%20number%20request" style="position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;border-bottom:1px solid #3A3936;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em;opacity:{{ con.r3 }};transform:{{ con.r3t }}" style-hover="color:#FF5A4E"><span style="position:absolute;left:0;right:0;top:0;height:1px;background:#3A3936;transform-origin:left;transform:{{ con.l3 }}"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">D</span><span>Phone</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">On request →</span></a>
+  </div>
+  <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A"><span>© 2026 Akhil</span><span>Designed with privacy in mind</span></div>
+</section>
+
+<sc-if value="{{ galleryOpen }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Gallery" style="position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse 60% 70% at 50% 42%,#FFFFFF 0%,#ECEAE4 55%,#DCDAD2 100%);display:flex;flex-direction:column">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(20px,4vw,56px);border-bottom:1px solid #CFCDC5;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase">
+      <span>The Akhil Collection · Room 01</span>
+      <button onClick="{{ closeGallery }}" style="padding:8px 14px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">Close ✕</button>
+    </div>
+    <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:clamp(24px,5vw,72px);padding:32px clamp(20px,4vw,56px);flex-wrap:wrap">
+      <div style="padding:clamp(14px,1.6vw,24px);background:#FFFFFF;border:1px solid #D2D0C8;box-shadow:0 30px 60px -20px rgba(0,0,0,.28),0 8px 18px -8px rgba(0,0,0,.18)">
+        <div style="width:{{ art.w }};aspect-ratio:{{ art.ratio }};max-height:58vh;background:repeating-linear-gradient(135deg,#ECEAE4 0 8px,#E3E1DA 8px 16px);display:flex;align-items:flex-end;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">[ artwork {{ art.num }} ]</div>
+      </div>
+      <div style="width:220px;display:flex;flex-direction:column;gap:10px;padding:16px;background:#FBFAF7;border:1px solid #CFCDC5">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#E0362C">No. {{ art.num }}</span>
+        <span style="font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.1">{{ art.title }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65;line-height:1.5">{{ art.medium }}<br>{{ art.year }}</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(20px,4vw,56px);border-top:1px solid #CFCDC5;font-family:'IBM Plex Mono',monospace;font-size:12px">
+      <button onClick="{{ prevArt }}" style="padding:10px 16px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">← Prev</button>
+      <span>{{ artCounter }}</span>
+      <button onClick="{{ nextArt }}" style="padding:10px 16px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">Next →</button>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;floatIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+const TOOLS = ['Claude','Figma','Canva','Higgsfield','VS Code','Godot','Affinity','CapCut'];
+const SCATTER = [[18,28],[72,22],[40,68],[86,58],[12,72],[56,36],[30,44],[66,80]];
+const ART = [
+  {title:'Untitled I', medium:'Medium', year:'Year', ratio:'4 / 5'},
+  {title:'Untitled II', medium:'Medium', year:'Year', ratio:'1 / 1'},
+  {title:'Untitled III', medium:'Medium', year:'Year', ratio:'3 / 4'},
+  {title:'Untitled IV', medium:'Medium', year:'Year', ratio:'5 / 4'},
+  {title:'Untitled V', medium:'Medium', year:'Year', ratio:'2 / 3'},
+  {title:'Untitled VI', medium:'Medium', year:'Year', ratio:'4 / 5'}
+];
+const HOUSES = [[3,9,52],[14,8,72],[24,11,44],[37,9,86],[48,10,60],[61,12,100],[76,9,56],[87,10,78]];
+const AKHIL = 5;
+const LBL = ['Name','Email','Phone','Address','DOB','Consent','Health','Case file','Payment','Location','Device','Logs','Role','Access','Retention','Region','Audit','Keys','Backups','Prompts'];
+const HOT = new Set([4,6,7,8,17]);
+const UI = [[0,0,100,11,-30,-40,-18,0],[0,16,22,84,-45,10,24,0],[27,16,34,38,20,-35,-30,0],[66,16,34,38,40,20,15,0],[27,60,73,40,-10,45,-12,0],[80,2,17,7,30,-50,40,1]];
+const SHAPES = [['c','#E0362C',12,22,0],['s','#111110',30,82,1],['t','#111110',50,8,2],['c','#111110',74,80,3],['s','#E0362C',88,28,4],['t','#A4A29A',18,55,5],['c','#A4A29A',84,56,-1],['s','#111110',62,40,-1]];
+const SP_SCATTER = [[5,60,-30],[62,8,25],[30,70,-12],[75,62,40],[10,12,18],[45,30,-45],[70,35,12],[20,40,30],[52,72,-20]];
+const C = v => Math.max(0, Math.min(1, v));
+const E = v => v * v * (3 - 2 * v);
+const L = (a, b, e) => a + (b - a) * e;
+const pad = n => String(n).padStart(2, '0');
+
+class Component extends DCLogic {
+  state = { pr: {hero:0,steal:-1,focus:-1,tools:-1,work:-1,mind:-1,connect:0}, vis:{}, t: 0, intro: 0, w: 1200, h: 800, doc: 0, galleryOpen: false, idx: 0 };
+  heroRef = React.createRef(); stealRef = React.createRef(); focusRef = React.createRef(); toolsRef = React.createRef();
+  workRef = React.createRef(); mindRef = React.createRef(); connectRef = React.createRef();
+
+  componentDidMount() {
+    this.start = performance.now();
+    this.measure = () => {
+      const ih = innerHeight, pr = {}, vis = {};
+      for (const k of ['hero','steal','focus','tools','work','mind']) {
+        const el = this[k + 'Ref'].current; if (!el) continue;
+        const r = el.getBoundingClientRect();
+        pr[k] = -r.top / Math.max(1, r.height - ih);
+        vis[k] = r.top < ih && r.bottom > 0;
+      }
+      const ce = this.connectRef.current;
+      if (ce) pr.connect = C((ih - ce.getBoundingClientRect().top) / (ih * 0.9));
+      const sh = document.documentElement.scrollHeight - ih;
+      this.setState({ pr, vis, w: innerWidth, h: ih, doc: sh > 0 ? scrollY / sh : 0 });
+    };
+    this.onKey = e => {
+      if (!this.state.galleryOpen) return;
+      if (e.key === 'Escape') this.setState({ galleryOpen: false });
+      if (e.key === 'ArrowRight') this.step(1);
+      if (e.key === 'ArrowLeft') this.step(-1);
+    };
+    const loop = () => {
+      const now = performance.now(), v = this.state.vis;
+      const intro = C((now - this.start) / 1500);
+      if (this.state.intro < 1 || v.tools || v.focus || v.work || v.mind) this.setState({ t: now / 1000, intro });
+      this.raf = requestAnimationFrame(loop);
+    };
+    addEventListener('scroll', this.measure, { passive: true });
+    addEventListener('resize', this.measure);
+    addEventListener('keydown', this.onKey);
+    this.measure();
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() {
+    removeEventListener('scroll', this.measure);
+    removeEventListener('resize', this.measure);
+    removeEventListener('keydown', this.onKey);
+    cancelAnimationFrame(this.raf);
+  }
+  step(d) { this.setState(s => ({ idx: (s.idx + d + ART.length) % ART.length })); }
+
+  renderVals() {
+    const { pr, t, intro, w, h, idx } = this.state;
+    const amp = this.props.floatIntensity ?? 1;
+    const narrow = w < 760;
+
+    // Hero
+    const hp = C(pr.hero ?? 0);
+    const wk = E(C((hp - 0.12) / 0.62));
+    const hero = {
+      houses: HOUSES.map(([x, hw, hh], i) => {
+        const rise = E(C(intro * 1.8 - i * 0.1)), ak = i === AKHIL, lit = C((hp - 0.08) / 0.5) * 8 > i;
+        return { left: x + '%', width: hw + '%', height: hh + '%', transform: `translateY(${(1 - rise) * 105}%)`, bg: ak ? '#E0362C' : '#111110', win: ak ? '#F2F1EC' : (lit ? '#E0362C' : '#F2F1EC') };
+      }),
+      t1: `translateY(${(1 - E(C(intro * 1.6))) * 105}%)`,
+      t2: `translateY(${(1 - E(C(intro * 1.6 - 0.3))) * 105}%)`,
+      walkX: `calc(${L(0, 67, wk)}% - 8px)`,
+      walkT: `translateY(${-Math.abs(Math.sin(wk * 28)) * 14}px)`,
+      walkOp: C(intro * 2 - 1) * (1 - C((hp - 0.78) / 0.06)),
+      tagOp: C((hp - 0.8) / 0.1),
+      hintOp: C(intro * 2 - 1) * (1 - C(hp / 0.08))
+    };
+
+    // Worth stealing
+    const sr = pr.steal ?? -1, sp = C(sr);
+    const aIn = E(C((sr + 0.15) / 0.2)), aOut = E(C((sp - 0.6) / 0.12));
+    const down = E(C((sp - 0.18) / 0.18)), up = E(C((sp - 0.46) / 0.08));
+    const grip = E(C((sp - 0.36) / 0.08)) * (1 - up);
+    const lift = -grip * 26;
+    const clawY = L(L(-h, 0, down), -h * 1.1, up) + lift;
+    const shield = E(C((sp - 0.42) / 0.1));
+    const artT = (extra = 0) => `translate(-50%,-50%) translateY(${(1 - aIn) * 40 + extra}px) scale(${1 - 0.3 * aOut})`;
+    const ai = E(C((sp - 0.8) / 0.1));
+    const cap = (a, b) => { const o = a * (1 - b); return [o, `translateY(${(1 - a) * 24 - b * 24}px)`]; };
+    const [c1, c1t] = cap(aIn, C((sp - 0.2) / 0.05));
+    const [c2, c2t] = cap(C((sp - 0.22) / 0.05), C((sp - 0.55) / 0.05));
+    const [c3, c3t] = cap(C((sp - 0.58) / 0.05), 0);
+    const steal = {
+      c1, c1t, c2, c2t, c3, c3t,
+      artOp: aIn * (1 - aOut),
+      brandT: artT(), appT: artT(lift), webT: artT(),
+      clawT: `translate(-50%, ${clawY}px)`,
+      shieldOp: shield, shieldT: `scale(${L(1.1, 1, shield)})`,
+      cells: LBL.map((lb, i) => {
+        const ox = [22, 50, 78][i % 3], col = i % 5, row = Math.floor(i / 5);
+        const tx = 40 + (col - 2) * 11.5, ty = 50 + (row - 1.5) * 20;
+        const d = E(C(((sp - 0.6) / 0.2) * 1.5 - i * 0.025)), hot = HOT.has(i);
+        return { label: lb, left: L(ox, tx, d) + '%', top: L(50, ty, d) + '%', transform: `translate(-50%,-50%) scale(${L(0.3, 1, d)})`, opacity: C(d * 4), bg: hot ? '#E0362C' : '#FBFAF7', fg: hot ? '#FFFFFF' : '#111110' };
+      }),
+      lineT: `translateY(-50%) scaleX(${ai})`,
+      gateT: `translate(-50%,-50%) rotate(45deg) scale(${ai})`,
+      aiT: `translate(-50%,-50%) scale(${ai})`, aiOp: ai
+    };
+
+    // Focus
+    const fr = pr.focus ?? -1, fp = C(fr);
+    const pan = E(C((fp - 0.24) / 0.14)) + E(C((fp - 0.6) / 0.14));
+    const lp0 = C((fr + 0.15) / 0.35), lp1 = C((fp - 0.4) / 0.18), lp2 = C((fp - 0.76) / 0.18);
+    const calm = E(lp2);
+    const ax = L(66 + Math.cos(t * 0.9) * 14, 64, calm), ay = L(50 + Math.sin(t * 1.3) * 28, 50, calm);
+    const u1 = E(lp1);
+    const focus = {
+      trackT: `translateX(${-pan * 100}vw)`,
+      d0: pan < 0.5 ? 1 : 0.25, d1: pan >= 0.5 && pan < 1.5 ? 1 : 0.25, d2: pan >= 1.5 ? 1 : 0.25,
+      ballX: L(10, 90, E(lp0)) + '%',
+      netClip: `inset(0 ${(1 - lp0) * 100}% 0 0)`,
+      ui: UI.map(([x, y, bw, bh, dx, dy, rot, red]) => ({ left: x + '%', top: y + '%', width: bw + '%', height: bh + '%', transform: `translate(${(1 - u1) * dx}%, ${(1 - u1) * dy}%) rotate(${(1 - u1) * rot}deg)`, bg: red ? '#E0362C' : '#FBFAF7' })),
+      aiX: ax + '%', aiY: ay + '%',
+      checkOp: C((lp2 - 0.6) / 0.3)
+    };
+
+    // Tools
+    const tp = C(pr.tools ?? -1);
+    const te = E(C((tp - 0.3) / 0.4));
+    const cols = narrow ? 2 : 4, rows = Math.ceil(TOOLS.length / cols);
+    const cardW = narrow ? Math.min(160, w * 0.4) : Math.min(220, w * 0.17);
+    const gapX = (cardW + 16) / w * 100, gapY = 130 / h * 100;
+    const tl = {
+      tools: TOOLS.map((name, i) => {
+        const [bx, by] = SCATTER[i], ph = i * 1.7;
+        const fx = bx + Math.sin(t * 0.35 + ph) * 4 * amp, fy = by + Math.cos(t * 0.28 + ph) * 5 * amp;
+        const col = i % cols, row = Math.floor(i / cols);
+        const gx = 50 + (col - (cols - 1) / 2) * gapX, gy = 50 + (row - (rows - 1) / 2) * gapY;
+        const rot = Math.sin(t * 0.4 + ph) * 10 * amp * (1 - te);
+        return { name, num: pad(i + 1), left: L(fx, gx, te) + '%', top: L(fy, gy, te) + '%', transform: `translate(-50%,-50%) rotate(${rot}deg)`, opacity: C((tp - 0.02) / 0.1), width: cardW + 'px' };
+      }),
+      silenceOp: 1 - C(tp / 0.08),
+      orgOp: C((tp - 0.7) / 0.12)
+    };
+
+    // Work
+    const n = 5, u = C(pr.work ?? -1) * (n - 1) * 1.15 - 0.4;
+    const e = [1, 1, 2, 3, 4].map((_, i) => i === 0 ? 1 : E(C(u - (i - 1))));
+    const il = e.map((_, i) => i === 0 ? C((u + 0.4) / 0.5) : C((u - (i - 1) - 0.5) / 0.6));
+    const work = { counter: `${pad(Math.min(n, 1 + e.filter((x, i) => i > 0 && x > 0.5).length))} / ${pad(n)}` };
+    e.forEach((ei, i) => {
+      const depth = e.slice(i + 1).reduce((s, x) => s + x, 0);
+      work['t' + i] = `translateY(${(1 - ei) * 110}vh) translateY(${-depth * 14}px) scale(${1 - depth * 0.04})`;
+      work['d' + i] = Math.min(0.45, depth * 0.15);
+    });
+    const a0 = E(il[0]);
+    Object.assign(work, {
+      tcBigX: L(18, 36, a0) + '%', tcSmallX: L(82, 62, a0) + '%',
+      tcHeartT: `translate(-50%,-50%) scale(${il[0] > 0.95 ? 1 + 0.15 * Math.sin(t * 5) : E(C((il[0] - 0.6) / 0.35))})`,
+      tcB0: C(il[0] * 3 - 0.6), tcB1: C(il[0] * 3 - 1.2), tcB2: C(il[0] * 3 - 1.8),
+      csBeamT: `rotate(${L(-16, 0, E(il[1]))}deg)`, csPanT: `rotate(${L(16, 0, E(il[1]))}deg)`, csLabel: C((il[1] - 0.7) / 0.3),
+      spLabel: il[2] > 0.5 ? 'After' : 'Before',
+      spBlocks: SP_SCATTER.map(([sx, sy, sr2], i) => {
+        const a = E(il[2]), gx = 13 + (i % 3) * 26, gy = 15 + Math.floor(i / 3) * 26;
+        return { left: L(sx, gx, a) + '%', top: L(sy, gy, a) + '%', transform: `rotate(${(1 - a) * sr2}deg)`, bg: i === 4 ? '#FFFFFF' : 'transparent' };
+      })
+    });
+    const a3 = E(il[3]), th = Math.PI * (1 - a3);
+    Object.assign(work, {
+      cbClip: `inset(0 ${(1 - a3) * 100}% 50% 0)`,
+      cbDotX: (50 + Math.cos(th) * 35) + '%', cbDotY: (70 - Math.sin(th) * 40) + '%', cbDotOp: il[3] > 0.02 && il[3] < 0.98 ? 1 : 0,
+      idSquares: [80, 60, 40, 20].map((s, i) => ({ size: s + '%', transform: `translate(-50%,-50%) rotate(${(1 - E(il[4])) * (i + 1) * 22}deg)`, bg: i === 3 ? `rgba(224,54,44,${C((il[4] - 0.7) / 0.3)})` : 'transparent' }))
+    });
+
+    // Creative mind
+    const mr = pr.mind ?? -1, mp = C(mr);
+    const m1 = E(C((mr + 0.1) / 0.45)), m2 = E(C((mp - 0.5) / 0.28));
+    const boxW = Math.min(w * 0.9, 1000), boxH = h * 0.6;
+    const s0 = Math.min(boxW, boxH) * 0.14, fw = boxW * (narrow ? 0.28 : 0.24), fh = boxH * 0.4;
+    const mind = {
+      capA: 1 - C((mp - 0.4) / 0.08), capB: C((mp - 0.55) / 0.1),
+      headT: `translate(-50%,-50%) scale(${L(0.7, 1, m1)})`, headOp: C(m1 * 2) * (1 - m2),
+      btnOp: C((mp - 0.75) / 0.1), btnPe: mp > 0.75 ? 'auto' : 'none',
+      shapes: SHAPES.map(([k, col, sx, sy, f], i) => {
+        const x1 = L(50, sx, m1), y1 = L(50, sy, m1);
+        const fx = f >= 0 ? 50 + ((f % 3) - 1) * 31 : x1, fy = f >= 0 ? 50 + (Math.floor(f / 3) - 0.5) * 50 : y1;
+        const framed = m2 > 0.5 && f >= 0;
+        const rot = (1 - m2) * (m1 * (i % 2 ? 1 : -1) * (40 + i * 12) + Math.sin(t * 0.5 + i) * 6);
+        return {
+          left: L(x1, fx, m2) + '%', top: L(y1, fy, m2) + '%',
+          width: (f >= 0 ? L(s0, fw, m2) : s0) + 'px', height: (f >= 0 ? L(s0, fh, m2) : s0) + 'px',
+          transform: `translate(-50%,-50%) rotate(${rot}deg) scale(${L(0.2, 1, m1)})`,
+          opacity: f >= 0 ? C(m1 * 3) : C(m1 * 3) * (1 - m2),
+          radius: k === 'c' && !framed ? '50%' : '0',
+          clip: k === 't' && !framed ? 'polygon(50% 0,100% 100%,0 100%)' : 'none',
+          bg: framed ? 'repeating-linear-gradient(135deg,#ECEAE4 0 8px,#E3E1DA 8px 16px)' : col,
+          border: framed ? '10px solid #FFFFFF' : '0px solid transparent',
+          shadow: framed ? '0 0 0 1px #D2D0C8, 0 20px 40px -18px rgba(0,0,0,.35)' : 'none',
+          label: framed ? 'No. ' + pad(f + 1) : '',
+          cursor: framed ? 'pointer' : 'default',
+          onClick: framed ? () => this.setState({ galleryOpen: true, idx: f }) : undefined
+        };
+      })
+    };
+
+    // Connect
+    const cr = pr.connect ?? 0;
+    const con = { headT: `translateY(${(1 - E(C(cr * 1.6))) * 60}px)` };
+    [0, 1, 2, 3].forEach(i => {
+      const o = E(C(cr * 3 - i * 0.35 - 0.6));
+      con['r' + i] = o; con['r' + i + 't'] = `translateX(${-(1 - o) * 40}px)`; con['l' + i] = `scaleX(${o})`;
+    });
+
+    const a = ART[idx];
+    return {
+      heroRef: this.heroRef, stealRef: this.stealRef, focusRef: this.focusRef, toolsRef: this.toolsRef,
+      workRef: this.workRef, mindRef: this.mindRef, connectRef: this.connectRef,
+      docBar: `scaleX(${this.state.doc})`,
+      hero, steal, focus, tl, work, mind, con,
+      galleryOpen: this.state.galleryOpen,
+      openGallery: () => this.setState({ galleryOpen: true }),
+      closeGallery: () => this.setState({ galleryOpen: false }),
+      prevArt: () => this.step(-1), nextArt: () => this.step(1),
+      art: { ...a, num: pad(idx + 1), w: narrow ? '68vw' : 'min(38vw, 460px)' },
+      artCounter: `${pad(idx + 1)} / ${pad(ART.length)}`
+    };
+  }
+}
+</script>
+</body>
+</html>

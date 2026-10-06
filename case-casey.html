@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casey Legal AI — Governed Agent Workflow · Akhil Biju</title>
+<meta name="description" content="Case study of Casey: Mitigating hallucination risk and achieving 100% human-in-the-loop review for high-liability legal AI workflows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-canvas: #F4F8FC;
+  --bg-glass-base: rgba(255, 255, 255, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --bg-glass-subtle: rgba(240, 248, 255, 0.60);
+  --bg-glass-card: rgba(255, 255, 255, 0.90);
+  --bg-glass-dark: rgba(10, 25, 47, 0.94);
+  
+  --ink-primary: #0A192F;
+  --ink-secondary: #475569;
+  --ink-tertiary: #64748B;
+  --ink-subtle: #94A3B8;
+  
+  /* Pure Architectural Ocean Blue */
+  --accent-ocean: #0066CC;
+  --accent-ocean-hover: #0052A3;
+  --accent-ocean-light: #EBF4FC;
+  --accent-ocean-border: rgba(0, 102, 204, 0.20);
+  --accent-ocean-glow: rgba(0, 102, 204, 0.16);
+  
+  /* Legacy alias to prevent broken rules */
+  --accent-ocean: #0066CC;
+  --accent-purple-glow: rgba(0, 102, 204, 0.16);
+  --accent-purple-light: #EBF4FC;
+  --accent-purple-border: rgba(0, 102, 204, 0.20);
+  
+  --glass-border: rgba(255, 255, 255, 0.95);
+  --glass-border-subtle: rgba(226, 238, 248, 0.90);
+  --glass-border-inner: inset 0 1.5px 1px 0 rgba(255, 255, 255, 1);
+  --glass-border-dark: rgba(255, 255, 255, 0.15);
+  
+  --glass-blur-sm: blur(14px) saturate(180%);
+  --glass-blur-md: blur(24px) saturate(180%);
+  --glass-blur-lg: blur(32px) saturate(190%);
+  
+  --radius-card: 32px;
+  --radius-panel: 22px;
+  --radius-pill: 999px;
+  
+  --font-main: 'Geist', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', SFMono-Regular, ui-monospace, Menlo, monospace;
+}
+
+/* Calm Ocean Background Canvas */
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  line-height: 1.5;
+  overflow-x: hidden;
+  position: relative;
+}
+
+
+
+/* ==========================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 900px) {
+  
+  
+  
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   AMBIENT LUMINOUS LIGHTING LAYER (Refracts through Frosted Glass)
+   ========================================================================== */
+.ambient-glow-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.85;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+}
+
+
+
+
+
+
+
+
+
+
+  100% { transform: translate(-80px, 90px) scale(1.1); }
+}
+
+
+  100% { transform: translate(90px, -70px) scale(1.12); }
+}
+
+
+  100% { transform: translate(-50px, -60px) scale(1.06); }
+}
+
+/* ==========================================================================
+   APPLE OS COMPACT MINIMAL HEADER & JELLY DOCK
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 14px;
+  z-index: 100;
+  max-width: 1020px;
+  margin: 14px auto 0;
+  padding: 0 16px;
+}
+
+.nav-inner {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 12px 30px -8px rgba(20, 14, 38, 0.07),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 1),
+    0 0 0 1px rgba(20, 14, 38, 0.03);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px 6px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-primary);
+  cursor: pointer;
+}
+
+.brand-symbol {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--accent-ocean);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(91, 43, 224, 0.3);
+}
+
+.nav-links-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-link {
+  color: var(--ink-secondary);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--ink-primary);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.nav-right-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jelly-dock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 40px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.jelly-dock:active {
+  cursor: grabbing;
+}
+
+.jelly-dock canvas {
+  width: 58px;
+  height: 40px;
+  display: block;
+}
+
+.jelly-tooltip {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 14, 38, 0.85);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.jelly-dock:hover .jelly-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(2px);
+}
+
+.btn-header-cta {
+  background: var(--accent-ocean);
+  color: #FFFFFF;
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(91, 43, 224, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.btn-header-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(91, 43, 224, 0.4);
+}
+
+/* ==========================================================================
+   HERO SECTION (Apple OS Minimalist Clean)
+   ========================================================================== */
+.hero-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(64px, 8.5vh, 100px) 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-pill-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04), var(--glass-border-inner);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--accent-ocean);
+  text-transform: uppercase;
+}
+
+.beacon-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
+  animation: pulseBeacon 2.2s infinite;
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px #10B981; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.hero-h1 {
+  font-size: clamp(38px, 5.8vw, 84px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  color: var(--ink-primary);
+  max-width: 19ch;
+}
+
+.hero-h1 span.highlight {
+  color: var(--accent-ocean);
+  font-weight: 700;
+}
+
+.hero-p {
+  font-size: clamp(17px, 1.7vw, 20.5px);
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  max-width: 58ch;
+}
+
+/* 4 Apple OS Frosted Metric Tiles */
+.hero-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.stat-item {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 12px 28px -8px rgba(20, 14, 38, 0.05),
+    var(--glass-border-inner);
+  border-radius: 22px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  background: var(--bg-glass-hover);
+  box-shadow: 0 18px 36px -8px rgba(91, 43, 224, 0.12), var(--glass-border-inner);
+}
+
+.stat-item.accented {
+  border-color: rgba(91, 43, 224, 0.35);
+  background: #FFFFFF; border-color: rgba(0, 102, 204, 0.35); box-shadow: 0 16px 36px -8px rgba(0, 102, 204, 0.12);
+}
+
+.stat-number {
+  font-size: clamp(44px, 4.8vw, 62px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.stat-item.accented .stat-number {
+  color: var(--accent-ocean);
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   STICKY CARD STACK (Reference Stacking Animation & Curvy 32px Shape + Glass)
+   ========================================================================== */
+.case-stack-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 90px 24px 110px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.section-h2 {
+  font-size: clamp(34px, 4.4vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.section-h2 span {
+  color: var(--ink-subtle);
+}
+
+.section-counter {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--accent-ocean);
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03), var(--glass-border-inner);
+  white-space: nowrap;
+}
+
+.case-stack-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* THE CLICKABLE STACKED GLASS CARD */
+.stacked-case-card {
+  position: sticky;
+  border-radius: var(--radius-card); /* 32px curvy sleek shape from reference */
+  background: var(--bg-glass-card);
+  backdrop-filter: var(--glass-blur-lg);
+  -webkit-backdrop-filter: var(--glass-blur-lg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 -22px 48px -20px rgba(91, 43, 224, 0.10),
+    0 24px 50px -12px rgba(20, 14, 38, 0.08),
+    var(--glass-border-inner),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02);
+  padding: clamp(32px, 3.8vw, 48px);
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 36px;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  overflow: hidden;
+}
+
+.stacked-case-card:hover {
+  transform: translateY(-6px) scale(1.006);
+  border-color: rgba(91, 43, 224, 0.45);
+  box-shadow: 
+    0 32px 70px -15px rgba(91, 43, 224, 0.22),
+    0 -10px 32px -16px rgba(20, 14, 38, 0.12),
+    var(--glass-border-inner),
+    0 0 0 1px rgba(91, 43, 224, 0.25);
+}
+
+.card-left-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-top-kicker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-step-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent-ocean);
+  background: var(--accent-ocean-light);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.card-domain-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-tertiary);
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.card-desc {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+.card-impact-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border-top: 1px solid rgba(20, 14, 38, 0.08);
+  padding-top: 16px;
+}
+
+.card-impact-metric {
+  font-size: clamp(32px, 3.2vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--accent-ocean);
+  line-height: 1;
+}
+
+.card-impact-label {
+  font-size: 13px;
+  color: var(--ink-secondary);
+  line-height: 1.35;
+}
+
+.card-tags-tray {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-tag-item {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  color: var(--ink-secondary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.card-click-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-ocean);
+  margin-top: 4px;
+}
+
+.card-click-prompt svg {
+  transition: transform 0.2s ease;
+}
+
+.stacked-case-card:hover .card-click-prompt svg {
+  transform: translateX(4px);
+}
+
+/* Card Right Preview (Apple macOS Frosted Window Chrome) */
+.card-right-preview {
+  border-radius: var(--radius-panel);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px -10px rgba(20, 14, 38, 0.06), var(--glass-border-inner);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+/* macOS Window Header Chrome */
+.macos-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(20, 14, 38, 0.06);
+}
+
+.traffic-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.dot-red { background: #FF5F56; }
+.dot-yellow { background: #FFBD2E; }
+.dot-green { background: #27C93F; }
+
+.macos-window-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-tertiary);
+  margin-left: 6px;
+}
+
+/* ==========================================================================
+   OTHER PROJECTS SECTION (Apple Frosted Glass Tiles)
+   ========================================================================== */
+.other-projects-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 60px 24px 110px;
+  position: relative;
+  z-index: 1;
+}
+
+.other-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+  gap: 18px;
+}
+
+.mini-work-card {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 14px 34px -10px rgba(20, 14, 38, 0.05), var(--glass-border-inner);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.mini-work-card:hover {
+  background: var(--bg-glass-hover);
+  border-color: rgba(91, 43, 224, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px -10px rgba(91, 43, 224, 0.12), var(--glass-border-inner);
+}
+
+.mini-card-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent-ocean);
+  text-transform: uppercase;
+}
+
+.mini-card-title {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink-primary);
+  margin-top: 4px;
+}
+
+.mini-card-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin-top: 8px;
+}
+
+.mini-card-foot {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-primary);
+  border-top: 1px solid rgba(20, 14, 38, 0.06);
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ==========================================================================
+   CONNECT SECTION (Apple visionOS Deep Frosted Glass Slab)
+   ========================================================================== */
+.connect-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 110px;
+  position: relative;
+  z-index: 1;
+}
+
+.connect-card {
+  background: var(--bg-glass-dark);
+  backdrop-filter: var(--glass-blur-lg);
+  -webkit-backdrop-filter: var(--glass-blur-lg);
+  border: 1px solid var(--glass-border-dark);
+  box-shadow: 
+    0 30px 70px -15px rgba(20, 14, 38, 0.35),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+  border-radius: var(--radius-card);
+  padding: clamp(36px, 5vw, 68px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 40px;
+  align-items: center;
+}
+
+.connect-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.connect-h2 {
+  font-size: clamp(36px, 4.8vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+.connect-p {
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: #D1C7EE;
+  max-width: 44ch;
+}
+
+.connect-right-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.connect-action-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: var(--glass-blur-sm);
+  transition: all 0.2s ease;
+}
+
+.connect-action-pill:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.connect-action-pill.primary {
+  background: #FFFFFF;
+  color: var(--ink-primary);
+  border-color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.connect-action-pill.primary:hover {
+  background: var(--accent-ocean-light);
+  color: var(--accent-ocean);
+  border-color: #FFFFFF;
+}
+
+/* ==========================================================================
+   SITE FOOTER
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid rgba(20, 14, 38, 0.06);
+  padding: 32px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+
+/* ==========================================================================
+   DEDICATED FULL CASE STUDY PAGE VIEW (Apple OS Glass Canvas)
+   ========================================================================== */
+.home-page-view {
+  display: block;
+}
+
+.home-page-view.hidden {
+  display: none !important;
+}
+
+.case-study-view {
+  display: none;
+  min-height: 100vh;
+  padding-bottom: 120px;
+  position: relative;
+  z-index: 1;
+}
+
+.case-study-view.active {
+  display: block;
+}
+
+.case-page-top-nav {
+  position: sticky;
+  top: 16px;
+  z-index: 90;
+  max-width: 1240px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+}
+
+.case-top-nav-inner {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 16px 36px -10px rgba(20, 14, 38, 0.08),
+    var(--glass-border-inner);
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-primary);
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.btn-back-home:hover {
+  background: #FFFFFF;
+  border-color: var(--accent-ocean);
+  color: var(--accent-ocean);
+  transform: translateX(-2px);
+}
+
+.case-study-content-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 68px;
+}
+
+.study-hero-block {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.study-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--accent-ocean);
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.study-h1 {
+  font-size: clamp(34px, 4.6vw, 66px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.study-thesis-lead {
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  max-width: 54ch;
+}
+
+/* Glass Meta Grid */
+.study-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 22px 26px;
+  box-shadow: 0 10px 30px -10px rgba(20, 14, 38, 0.05), var(--glass-border-inner);
+}
+
+.study-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.study-meta-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-tertiary);
+  text-transform: uppercase;
+}
+
+.study-meta-value {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+/* Apple OS Glass Analytics Dashboard */
+.analytics-section-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section-subhead {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--accent-ocean);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.section-study-h2 {
+  font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.kpi-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 10px 28px -10px rgba(20, 14, 38, 0.05), var(--glass-border-inner);
+}
+
+.kpi-value {
+  font-size: clamp(34px, 3.4vw, 50px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.kpi-value.positive {
+  color: var(--accent-ocean);
+  font-weight: 700;
+}
+
+.kpi-desc {
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+
+.comparative-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+  gap: 20px;
+}
+
+.chart-card {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 14px 34px -10px rgba(20, 14, 38, 0.06), var(--glass-border-inner);
+}
+
+.chart-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.chart-title {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.chart-delta-badge {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  backdrop-filter: var(--glass-blur-sm);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.bar-pair-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+}
+
+.bar-meta-row span.val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.bar-track {
+  height: 9px;
+  background: rgba(20, 14, 38, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.bar-fill.baseline {
+  background: #CBD5E1;
+}
+
+.bar-fill.shipped {
+  background: var(--accent-ocean);
+  box-shadow: 0 2px 10px rgba(91, 43, 224, 0.4);
+}
+
+/* ==========================================================================
+   PRODUCT SCREENS SHOWCASE (Apple macOS Window Chrome)
+   ========================================================================== */
+.screens-showcase-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.screen-tabs-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(20, 14, 38, 0.06);
+  padding-bottom: 14px;
+}
+
+.screen-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02), var(--glass-border-inner);
+  transition: all 0.2s ease;
+}
+
+.screen-tab-btn:hover {
+  color: var(--ink-primary);
+  background: var(--bg-glass-hover);
+}
+
+.screen-tab-btn.active {
+  color: #FFFFFF;
+  background: var(--ink-primary);
+  border-color: var(--ink-primary);
+  box-shadow: 0 4px 14px rgba(20, 14, 38, 0.2);
+}
+
+.screen-pane-content {
+  display: none;
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 16px 40px -12px rgba(20, 14, 38, 0.07), var(--glass-border-inner);
+}
+
+.screen-pane-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   DESIGN IMPACT & ITERATIONS (Frosted Glass Cards)
+   ========================================================================== */
+.impact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 18px;
+}
+
+.intervention-card {
+  background: var(--bg-glass-base);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 12px 28px -10px rgba(20, 14, 38, 0.05), var(--glass-border-inner);
+}
+
+.intervention-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent-ocean);
+  background: var(--accent-ocean-light);
+  align-self: flex-start;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.intervention-title {
+  font-size: 16.5px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.intervention-body {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+}
+
+/* Bottom Study Navigation */
+.case-study-bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid rgba(20, 14, 38, 0.08);
+  padding-top: 36px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Toast */
+.toast-msg {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-glass-dark);
+  backdrop-filter: var(--glass-blur-md);
+  -webkit-backdrop-filter: var(--glass-blur-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+
+.toast-msg.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .stacked-case-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .card-right-preview {
+    min-height: 240px;
+  }
+  .comparative-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .nav-links-row {
+    display: none;
+  }
+}
+.case-study-page-view {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  padding-top: 20px;
+}
+
+/* ==========================================================================
+   BESPOKE CASE STUDY ARTIFACTS & OBSERVATION DECK STYLES
+   ========================================================================== */
+
+.case-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-ocean);
+  margin-bottom: 6px;
+}
+
+.case-section-title {
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.case-section-desc {
+  font-size: clamp(14.5px, 1.4vw, 16.5px);
+  color: var(--ink-secondary);
+  line-height: 1.6;
+  max-width: 68ch;
+  margin-top: 4px;
+}
+
+/* 1. Field Observation Deck */
+.field-observation-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 14px;
+}
+
+.field-observation-card {
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--accent-ocean);
+  border-radius: 20px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 14px 34px -10px rgba(10, 25, 47, 0.05), inset 0 1.5px 1px #FFFFFF;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field-observation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 42px -10px rgba(0, 102, 204, 0.10), inset 0 1.5px 1px #FFFFFF;
+}
+
+.field-obs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ocean);
+  font-weight: 700;
+}
+
+.field-obs-tag {
+  background: rgba(0, 102, 204, 0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+}
+
+.field-obs-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.field-obs-quote {
+  background: rgba(0, 102, 204, 0.035);
+  border-left: 3px solid var(--accent-ocean);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-primary);
+}
+
+.field-obs-quote .quote-speaker {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-tertiary);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field-obs-body {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+.field-obs-cost {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(20, 14, 38, 0.06);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #D9381E;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 2. Process Roadmap Stepper */
+.process-roadmap-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.process-phase-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 10px 28px -10px rgba(10, 25, 47, 0.04), inset 0 1px 1px #fff;
+}
+
+.phase-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phase-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-ocean);
+  letter-spacing: 0.06em;
+}
+
+.phase-duration {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-tertiary);
+  font-weight: 600;
+}
+
+.phase-heading {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.phase-narrative {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+.phase-deliverable {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-ocean);
+  background: rgba(0, 102, 204, 0.06);
+  padding: 5px 10px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+/* 3. Decision Trade-Off / Rejection Callout */
+.tradeoff-callout-card {
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(226, 238, 248, 0.98);
+  border-radius: 20px;
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  box-shadow: inset 0 1px 1px #fff;
+  margin-top: 14px;
+}
+
+.tradeoff-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tradeoff-column.rejected {
+  padding-right: 20px;
+  border-right: 1px solid rgba(20, 14, 38, 0.08);
+}
+
+.tradeoff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tradeoff-badge.rejected { color: #C2410C; }
+.tradeoff-badge.chosen { color: #0284C7; }
+
+.tradeoff-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin: 0;
+}
+
+.tradeoff-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+/* 4. Domain Specific Artifact Boxes */
+.architecture-spec-box {
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(20, 14, 38, 0.08);
+  border-radius: 20px;
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.spec-step-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.spec-step-item {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 238, 248, 0.95);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(10, 25, 47, 0.02);
+}
+
+.spec-step-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-ocean);
+  text-transform: uppercase;
+}
+
+.spec-step-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.spec-step-detail {
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+/* 5. Nielsen Heuristics / Usability Failure Cards */
+.nielsen-audit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.nielsen-audit-card {
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 10px 24px -8px rgba(10, 25, 47, 0.04);
+}
+
+.nielsen-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-ocean);
+}
+
+.nielsen-failure {
+  font-size: 13px;
+  color: #B91C1C;
+  background: rgba(220, 38, 38, 0.05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1.45;
+}
+
+.nielsen-fix {
+  font-size: 13px;
+  color: #0369A1;
+  background: rgba(2, 132, 199, 0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1.45;
+}
+
+@media (max-width: 800px) {
+  .tradeoff-callout-card {
+    grid-template-columns: 1fr;
+  }
+  .tradeoff-column.rejected {
+    border-right: none;
+    border-bottom: 1px solid rgba(20, 14, 38, 0.08);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="case-standalone-nav">
+  <a href="index.html" class="nav-back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
+    <span>← Back to Portfolio</span>
+  </a>
+  <span style="font-family:var(--font-mono); font-size:12px; color:var(--ink-tertiary); font-weight:600;">AKHIL BIJU · PRODUCT DESIGN</span>
+</header>
+
+<main class="page-container" style="padding-top: 14px;">
+  <div class="case-study-page-view active" data-case-page="casey">
+    <nav class="case-page-top-nav">
+      <div class="case-top-nav-inner">
+        <button class="btn-back-home" onclick="window.location.href='index.html#work'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          <span>Back to all projects</span>
+        </button>
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--ink-secondary);">CASE 02 / 04 · ENTERPRISE LEGAL AI</span>
+        <button class="btn-back-home" onclick="window.location.href='case-shift.html'">
+          <span>Next: ShiftPartner (NHS)</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </nav>
+
+<div class="case-study-content-shell">
+
+      <!-- Hero Header -->
+      <div class="study-hero-block">
+        <span class="study-eyebrow">
+          <span class="beacon-dot"></span>
+          ENTERPRISE LEGAL-AI &amp; REGULATORY AUDIT · AIR-GAPPED
+        </span>
+        <h1 class="study-h1">Casey: Why Corporate Attorneys Rejected Chatbots, and the 13-Stage Audit Terminal We Built Instead.</h1>
+        <p class="study-thesis-lead">
+          An enterprise legal compliance platform and document intelligence suite. Replaced probabilistic conversational AI with a deterministic 13-stage verification pipeline and a dual-app architecture, pairing the Compliance Console for in-house legal reviewers with the Evidence Portal for third-party contributors.
+        </p>
+
+        <div class="study-meta-grid">
+          <div class="study-meta-item">
+            <span class="study-meta-label">ROLE &amp; SCOPE</span>
+            <span class="study-meta-value">Lead Product Designer · IA, PRDs &amp; Design System</span>
+          </div>
+          <div class="study-meta-item">
+            <span class="study-meta-label">TIMELINE</span>
+            <span class="study-meta-value">6 Months · Enterprise Product Delivery</span>
+          </div>
+          <div class="study-meta-item">
+            <span class="study-meta-label">DUAL-APP ECOSYSTEM</span>
+            <span class="study-meta-value">Compliance Console + Evidence Portal</span>
+          </div>
+          <div class="study-meta-item">
+            <span class="study-meta-label">CORE VALIDATION</span>
+            <span class="study-meta-value">4.2x Faster Audit · 0% Hallucination Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 01: LEGAL AUDIT DISCOVERY & PARALEGAL SHADOWING -->
+      <div class="analytics-section-wrap">
+        <div class="case-section-kicker">
+          <span class="beacon-dot"></span>
+          <span>01 / LEGAL AUDIT DISCOVERY &amp; PARALEGAL SHADOWING</span>
+        </div>
+        <h2 class="case-section-title">Why Attorneys Refused to Touch Conversational Chatbots</h2>
+        <p class="case-section-desc">
+          Shadowing corporate lawyers and senior paralegals during high-stakes M&amp;A compliance audits revealed why standard consumer AI patterns failed completely in enterprise legal workflows.
+        </p>
+
+        <div class="field-observation-deck">
+          <!-- Card 1 -->
+          <div class="field-observation-card">
+            <div class="field-obs-header">
+              <span>COGNITIVE PARALYSIS</span>
+              <span class="field-obs-tag">PARALEGAL LAB // 24-TAB CHAOS</span>
+            </div>
+            <h3 class="field-obs-title">The 850-Page Vendor Addendum Trap</h3>
+            <div class="field-obs-quote">
+              "I have an 850-page credit agreement on my left screen, 14 regulatory guidance memos on my right screen, and an Excel sheet with 300 compliance checks in the middle. One wrong cross-reference costs our client $2.4M in regulatory penalties."
+              <span class="quote-speaker">— Senior Compliance Paralegal, Global Financial Services</span>
+            </div>
+            <p class="field-obs-body">
+              Observed paralegals spending 47 minutes per contract clause manually verifying whether indemnification exclusions aligned with revised statutory regulations. The fragmentation between PDF viewers, spreadsheets, and legal guidance memos created massive cognitive fatigue by midday.
+            </p>
+            <div class="field-obs-cost">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Operational Cost: Audit turnaround exceeded 18 business days per transaction</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="field-observation-card">
+            <div class="field-obs-header">
+              <span>GENERAL COUNSEL'S VETO</span>
+              <span class="field-obs-tag">PROVENANCE VS HALLUCINATION</span>
+            </div>
+            <h3 class="field-obs-title">"No Black-Box Chatbot Summaries"</h3>
+            <div class="field-obs-quote">
+              "A generative AI chat bubble that says 'the clause appears compliant' is completely unacceptable to our risk committee. If it cannot show me the exact highlighted vector coordinates on the original signed PDF, it's not evidence—it's a liability."
+              <span class="quote-speaker">— Deputy General Counsel, Enterprise FinTech</span>
+            </div>
+            <p class="field-obs-body">
+              Early prototypes tested a conversational AI chat drawer. Attorneys unanimously rejected it: conversational responses lacked spatial provenance, broke spatial memory, and could not be submitted to auditors without manually re-verifying every sentence against the underlying source file.
+            </p>
+            <div class="field-obs-cost">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Design Insight: Legal workflows require deterministic visual coordinates, not chats</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="field-observation-card">
+            <div class="field-obs-header">
+              <span>THIRD-PARTY EVIDENCE GAP</span>
+              <span class="field-obs-tag">THE INBOX BLACK HOLE</span>
+            </div>
+            <h3 class="field-obs-title">Missing Attachments &amp; Blurry Phone Scans</h3>
+            <div class="field-obs-quote">
+              "Half our audit cycle is spent chasing vendor CTOs for SOC2 certificates that arrive as blurry JPEG photos taken with a phone camera."
+              <span class="quote-speaker">— Lead Compliance Auditor, Enterprise Privacy Practice</span>
+            </div>
+            <p class="field-obs-body">
+              62% of audit bottlenecks originated outside the legal team—in unstructured back-and-forth email threads with third-party vendors. Vendors submitted outdated certificates or corrupt files that failed basic OCR, forcing paralegals into days of administrative follow-ups.
+            </p>
+            <div class="field-obs-cost">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Process Friction: 62% of audit delays caused by unstructured email intake</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 02: THE 6-MONTH RESEARCH & SYSTEMS DESIGN PROCESS -->
+      <div class="analytics-section-wrap">
+        <div class="case-section-kicker">
+          <span class="beacon-dot"></span>
+          <span>02 / THE 6-MONTH RESEARCH &amp; DESIGN PROCESS</span>
+        </div>
+        <h2 class="case-section-title">Architecting Deterministic Legal Forensics</h2>
+        <p class="case-section-desc">
+          How we dismantled the conversational AI assumption and built a deterministic legal verification suite across four execution phases.
+        </p>
+
+        <div class="process-roadmap-deck">
+          <div class="process-phase-card">
+            <div class="phase-top-row">
+              <span class="phase-badge">PHASE 01</span>
+              <span class="phase-duration">WEEKS 1–4</span>
+            </div>
+            <h4 class="phase-heading">14 Enterprise Playbook Audits</h4>
+            <p class="phase-narrative">Deconstructed 14 enterprise regulatory playbooks across antitrust, GDPR, and anti-bribery statutes into structured binary logic trees, identifying mandatory disclosure clauses.</p>
+            <span class="phase-deliverable">14 Structured Playbook Schemas</span>
+          </div>
+
+          <div class="process-phase-card">
+            <div class="phase-top-row">
+              <span class="phase-badge">PHASE 02</span>
+              <span class="phase-duration">WEEKS 5–8</span>
+            </div>
+            <h4 class="phase-heading">Coordinate Bounding-Box Reversal</h4>
+            <p class="phase-narrative">Pivoted away from conversational chat bubbles. Designed an exact coordinate-anchor diff engine binding audit rules directly to [x, y, w, h] vector boxes on original PDF layers.</p>
+            <span class="phase-deliverable">Vector Provenance Diff Spec</span>
+          </div>
+
+          <div class="process-phase-card">
+            <div class="phase-top-row">
+              <span class="phase-badge">PHASE 03</span>
+              <span class="phase-duration">WEEKS 9–16</span>
+            </div>
+            <h4 class="phase-heading">Dual-App Ecosystem Architecture</h4>
+            <p class="phase-narrative">Architected two synchronized interfaces sharing a live audit database: the Compliance Console for internal legal reviewers and the self-service Evidence Portal for external contributors.</p>
+            <span class="phase-deliverable">Dual-App Connected IA &amp; PRDs</span>
+          </div>
+
+          <div class="process-phase-card">
+            <div class="phase-top-row">
+              <span class="phase-badge">PHASE 04</span>
+              <span class="phase-duration">WEEKS 17–24</span>
+            </div>
+            <h4 class="phase-heading">Horizon Scanner &amp; Design Tokens</h4>
+            <p class="phase-narrative">Engineered the Horizon Scanner to monitor legislative bodies for real-time statutory updates, and extracted a tokenized design system directly from production prototypes.</p>
+            <span class="phase-deliverable">Tokenized System &amp; Horizon Engine</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 03: DUAL-APP ECOSYSTEM & 13-STAGE AUDIT PIPELINE -->
+      <div class="analytics-section-wrap">
+        <div class="case-section-kicker">
+          <span class="beacon-dot"></span>
+          <span>03 / DUAL-APP ECOSYSTEM &amp; 13-STAGE AUDIT PIPELINE</span>
+        </div>
+        <h2 class="case-section-title">The 13-Stage Deterministic Verification Pipeline</h2>
+        <p class="case-section-desc">
+          Instead of an ambiguous "AI thinking..." spinner, Casey exposes a transparent 13-stage state machine that gives lawyers complete visibility into document ingestion, vectorization, and rule evaluation.
+        </p>
+
+        <div class="architecture-spec-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span style="font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--accent-ocean);">CASEY // 13-STAGE DETERMINISTIC AUDIT PIPELINE</span>
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--ink-tertiary); background:rgba(0,102,204,0.06); padding:4px 8px; border-radius:6px;">AIR-GAPPED ZERO-LEAKAGE ENGINE</span>
+          </div>
+
+          <div class="spec-step-flow">
+            <div class="spec-step-item">
+              <span class="spec-step-tag">STAGES 01–04</span>
+              <span class="spec-step-name">Secure Ingestion &amp; OCR</span>
+              <span class="spec-step-detail">Air-gapped upload, SHA-256 hash verification, high-fidelity vector OCR, and multi-document bundle classification.</span>
+            </div>
+            <div class="spec-step-item">
+              <span class="spec-step-tag">STAGES 05–08</span>
+              <span class="spec-step-name">Playbook Rule Alignment</span>
+              <span class="spec-step-detail">Parsing statutory rules, semantic clause retrieval, coordinate anchor mapping [x, y, w, h], and confidence scoring.</span>
+            </div>
+            <div class="spec-step-item">
+              <span class="spec-step-tag">STAGES 09–13</span>
+              <span class="spec-step-name">Adjudication &amp; Sign-off</span>
+              <span class="spec-step-detail">Interactive split diff view, reviewer override logging, redaction verification, and cryptographic audit export.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision Trade-Off Callout -->
+        <div class="tradeoff-callout-card">
+          <div class="tradeoff-column rejected">
+            <div class="tradeoff-badge rejected">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>REJECTED ALTERNATIVE</span>
+            </div>
+            <h4 class="tradeoff-title">Conversational Chat Drawer</h4>
+            <p class="tradeoff-text">A floating conversational chat sidebar answering questions like "Is this contract compliant?". Rejected because lawyers cannot paste chat summaries into regulatory filings without citation provenance; chat interfaces obscure document layout and increase liability.</p>
+          </div>
+          <div class="tradeoff-column">
+            <div class="tradeoff-badge chosen">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>SHIPPED ARCHITECTURE</span>
+            </div>
+            <h4 class="tradeoff-title">Split-Screen Coordinate Diff Engine</h4>
+            <p class="tradeoff-text">A dual-pane workspace pairing the structured compliance playbook checklist on the left with the original PDF vector layer on the right. Discrepancies glow with precise amber/red vector bounding boxes anchored to line numbers and clause timestamps.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 04: PRODUCTION SCREEN SHOWCASE -->
+      <div class="screens-showcase-wrap">
+        <div class="case-section-kicker">
+          <span class="beacon-dot"></span>
+          <span>04 / PRODUCTION INTERFACE SYSTEM</span>
+        </div>
+        <h2 class="case-section-title">13-Stage Audit Terminal &amp; Coordinate Bounding Box Diff Engine</h2>
+        <p class="case-section-desc">Interactive production surfaces: the central 13-stage audit terminal and the real-time coordinate bounding box diff engine.</p>
+
+        <div class="screen-tabs-bar">
+          <button class="screen-tab-btn active" data-screen-tab="casey-screen-1">01 / 13-Stage Audit Terminal</button>
+          <button class="screen-tab-btn" data-screen-tab="casey-screen-2">02 / Bounding Box Diff Engine</button>
+        </div>
+
+        <div class="screen-display-stage">
+          <!-- Screen 1: Terminal -->
+          <div class="screen-pane-content active" id="pane-casey-screen-1">
+            <div class="macos-window-bar">
+              <div class="traffic-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <span class="macos-window-title">casey-audit-terminal.app</span>
+            </div>
+            <div style="background:#0F172A; border-radius:16px; padding:24px; color:#FFFFFF; display:flex; flex-direction:column; gap:16px; box-shadow:0 12px 30px rgba(0,0,0,0.25);">
+              <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; color:#94A3B8;">
+                <span>FILE: ENTERPRISE_VENDOR_MASTER_AGREEMENT.PDF</span>
+                <span style="color:#38BDF8">STAGE 07/13: AUDIT CHECK</span>
+              </div>
+              <div style="display:grid; grid-template-columns:2fr 1fr; gap:16px;">
+                <div style="background:#1E293B; border-radius:10px; padding:16px; font-family:var(--font-mono); font-size:12px; line-height:1.7;">
+                  <span style="color:#38BDF8">&gt; Scanning Playbook: EU_AI_ACT_MANDATORY_DISCLOSURE</span><br>
+                  <span style="color:#4ADE80">&gt; Bounding Box Anchored: Page 42, Paragraph 3, Line 12</span><br>
+                  <span style="color:#F59E0B">&gt; Discrepancy Found: Missing explicit high-risk system human oversight clause</span><br>
+                  <span style="color:#94A3B8">&gt; Confidence Score: 98.4% (Verified against Playbook Rule 4.1.2)</span>
+                </div>
+                <div style="background:#1E293B; border-radius:10px; padding:16px; display:flex; flex-direction:column; gap:8px;">
+                  <span style="font-family:var(--font-mono); font-size:10px; color:#94A3B8;">PIPELINE STATUS</span>
+                  <div style="font-size:18px; font-weight:700; color:#38BDF8;">STAGE 07 / 13</div>
+                  <div style="font-size:12px; color:#CBD5E1;">Clause Mapped. Awaiting Reviewer Adjudication.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screen 2: Diff Engine -->
+          <div class="screen-pane-content" id="pane-casey-screen-2">
+            <div class="macos-window-bar">
+              <div class="traffic-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <span class="macos-window-title">casey-coordinate-diff-engine.app</span>
+            </div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+              <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; padding:16px; font-size:12.5px; line-height:1.6; color:#334155;">
+                <div style="font-family:var(--font-mono); font-size:10px; font-weight:700; color:#0369A1; margin-bottom:8px;">SOURCE DOCUMENT // VECTOR ANCHOR (x:42, y:180, w:320, h:45)</div>
+                <p style="margin:0; background:rgba(245,158,11,0.15); padding:8px; border-left:3px solid #F59E0B; border-radius:4px;">
+                  "The Vendor shall deploy autonomous decision routines across customer telematics without requiring real-time human intervention."
+                </p>
+                <div style="margin-top:10px; font-size:11px; color:#DC2626; font-weight:600;">⚠ Flagged: Violates Article 14 Human Oversight Mandate</div>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; padding:16px; font-size:12.5px; line-height:1.6; color:#334155;">
+                <div style="font-family:var(--font-mono); font-size:10px; font-weight:700; color:#0369A1; margin-bottom:8px;">PLAYBOOK STANDARD // EU_AI_ACT_MANDATE_ART14</div>
+                <p style="margin:0; background:rgba(16,185,129,0.12); padding:8px; border-left:3px solid #10B981; border-radius:4px;">
+                  "High-risk AI systems shall be designed and developed in such a way that they can be effectively overseen by natural persons during the period in which they are in use."
+                </p>
+                <div style="margin-top:10px; font-size:11px; color:#16A34A; font-weight:600;">✓ Corrective Recommendation Staged for Reviewer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 05: ENTERPRISE AUDIT VELOCITY & GOVERNANCE SCORECARD -->
+      <div class="analytics-section-wrap">
+        <div class="case-section-kicker">
+          <span class="beacon-dot"></span>
+          <span>05 / ENTERPRISE AUDIT IMPACT &amp; RETROSPECTIVE</span>
+        </div>
+        <h2 class="case-section-title">Measured Velocity Across Enterprise Audits</h2>
+
+        <!-- 4 KPI Scorecard -->
+        <div class="kpi-cards-grid">
+          <div class="kpi-card">
+            <span class="kpi-value positive">4.2x</span>
+            <span class="kpi-desc">Faster audit completion velocity (18 days → 4.2 days)</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value positive">0%</span>
+            <span class="kpi-desc">Hallucination rate (100% vector coordinate anchored)</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value positive">100%</span>
+            <span class="kpi-desc">Citations traceable to original signed PDF addendum</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value positive">0%</span>
+            <span class="kpi-desc">Data leakage across air-gapped self-hosted nodes</span>
+          </div>
+        </div>
+
+        <!-- Comparative Visual Charts -->
+        <div class="comparative-charts-grid">
+          <div class="chart-card">
+            <div class="chart-title-row">
+              <span class="chart-title">M&amp;A Contract Audit Turnaround (Business Days)</span>
+              <span class="chart-delta-badge">-76.6% Turnaround</span>
+            </div>
+            <div class="bar-pair-group">
+              <div class="bar-row">
+                <div class="bar-meta-row">
+                  <span class="label">Manual Paralegal Cross-Reference</span>
+                  <span class="val">18.0 days</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill legacy" style="width: 100%;"></div>
+                </div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-meta-row">
+                  <span class="label">Casey 13-Stage Terminal</span>
+                  <span class="val">4.2 days</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill shipped" style="width: 23.3%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title-row">
+              <span class="chart-title">Citation Provenance Verification Accuracy</span>
+              <span class="chart-delta-badge">100% Provenance</span>
+            </div>
+            <div class="bar-pair-group">
+              <div class="bar-row">
+                <div class="bar-meta-row">
+                  <span class="label">Conversational Chatbot Interfaces</span>
+                  <span class="val">34.8%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill legacy" style="width: 34.8%;"></div>
+                </div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-meta-row">
+                  <span class="label">Casey Coordinate Diff Engine</span>
+                  <span class="val">100.0%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill shipped" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal Retrospective Callout -->
+        <div class="field-obs-quote" style="margin-top:14px; border-left-color:var(--accent-ocean);">
+          "In enterprise legal compliance, speed without verifiable provenance is considered negligence. High-stakes software must give operators forensic certainty over conversational charm."
+          <span class="quote-speaker">— Dr. Akhil Biju · Lead Product Designer</span>
+        </div>
+      </div>
+
+      <!-- Footer Navigation -->
+      <div class="case-study-bottom-nav">
+        <button class="btn-back-home" onclick="window.location.href=\'index.html#work\'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          <span>Back to all projects</span>
+        </button>
+        <button class="btn-header-cta" onclick="window.location.href='case-shift.html'"><span>Next: ShiftPartner NHS →</span></button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+// Interactive screen switcher for tabs
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.screen-tab-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      const targetId = tab.getAttribute('data-screen-tab');
+      const stage = tab.closest('.screen-display-wrapper');
+      if (!stage) return;
+      stage.querySelectorAll('.screen-tab-btn').forEach(t => t.classList.remove('active'));
+      stage.querySelectorAll('.screen-pane-content').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const targetPane = stage.querySelector('#pane-' + targetId);
+      if (targetPane) targetPane.classList.add('active');
+    });
+  });
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+# System & OS
+.DS_Store
+Thumbs.db
+.thumbnail
+
+# Internal generation & scratch scripts
+archive/
+scripts/
+extracted_resume.txt
+__pycache__/
+*.pyc
+*.ppm
+
+# Local environments & IDE
+.vscode/
+.idea/

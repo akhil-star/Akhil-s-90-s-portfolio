@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#F2F1EC;color:#111110;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#111110;text-decoration:none}
+a:hover{color:#E0362C}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:100vh;background:#F2F1EC;color:#111110">
+
+<sc-if value="{{ showGridLines }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:1;pointer-events:none;display:grid;grid-template-columns:repeat(12,1fr);gap:20px;padding:0 clamp(20px,4vw,56px)">
+    <div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div><div style="border-left:1px solid rgba(224,54,44,.12);border-right:1px solid rgba(224,54,44,.12)"></div>
+  </div>
+</sc-if>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:40;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-items:center;padding:18px clamp(20px,4vw,56px);background:rgba(242,241,236,.88);backdrop-filter:blur(8px);border-bottom:1px solid #DAD8D0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase">
+  <a href="#top" style="grid-column:span 4;display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;background:#E0362C"></span>Akhil</a>
+  <span style="grid-column:span 4;color:#6B6A65">Designer, your neighbourhood</span>
+  <nav style="grid-column:span 4;display:flex;justify-content:flex-end;gap:24px">
+    <a href="#work">Work</a>
+    <a href="#creative">Art</a>
+    <a href="#connect">Contact</a>
+  </nav>
+</header>
+
+<section id="top" data-screen-label="01 Hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:120px clamp(20px,4vw,56px) 40px;gap:64px">
+  <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">
+    <span style="grid-column:span 4">(01) Introduction</span>
+    <span style="grid-column:span 4">Brands / Apps / Websites</span>
+    <span style="grid-column:span 4;text-align:right">Portfolio 2026</span>
+  </div>
+  <h1 style="margin:0;font-weight:500;font-size:clamp(52px,10.5vw,176px);line-height:.88;letter-spacing:-.055em">Hi, I'm Akhil.<br><span style="color:#A4A29A">Your neighbourhood</span><br>designer<span style="color:#E0362C">.</span></h1>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px 40px;border-top:1px solid #111110;padding-top:20px">
+    <p style="margin:0;font-size:clamp(18px,1.5vw,22px);line-height:1.35;letter-spacing:-.01em;text-wrap:pretty">I build brands, apps and websites worth stealing. They just shouldn't be stolen that easily.</p>
+    <p style="margin:0;font-size:clamp(18px,1.5vw,22px);line-height:1.35;letter-spacing:-.01em;color:#6B6A65;text-wrap:pretty">That's where I come in: privacy, data structure and regulation, even for the AI that handles your data.</p>
+    <div style="display:flex;flex-direction:column;font-family:'IBM Plex Mono',monospace;font-size:13px">
+      <div style="display:flex;justify-content:space-between;gap:12px;padding:0 0 10px;border-bottom:1px solid #DAD8D0"><span>High-stakes UX</span><span style="color:#E0362C">A</span></div>
+      <div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #DAD8D0"><span>Clean UI</span><span style="color:#E0362C">B</span></div>
+      <div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0 0"><span>AI, used the way it should be</span><span style="color:#E0362C">C</span></div>
+    </div>
+  </div>
+</section>
+
+<section ref="{{ toolsRef }}" data-screen-label="02 Toolkit" style="position:relative;height:300vh;border-top:1px solid #DAD8D0">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div style="position:absolute;left:clamp(20px,4vw,56px);top:90px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(02) Toolkit</div>
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'IBM Plex Mono',monospace;font-size:13px;color:#A4A29A;opacity:{{ silenceOp }}">( silence )</div>
+    <sc-for list="{{ tools }}" as="t" hint-placeholder-count="0">
+      <div style="position:absolute;left:{{ t.left }};top:{{ t.top }};transform:{{ t.transform }};opacity:{{ t.opacity }};width:{{ t.width }};display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:14px 16px;background:#FBFAF7;border:1px solid #111110;will-change:transform">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6B6A65">{{ t.num }}</span>
+        <span style="font-size:clamp(17px,1.6vw,22px);font-weight:500;letter-spacing:-.02em">{{ t.name }}</span>
+      </div>
+    </sc-for>
+    <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:48px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;opacity:{{ orgOp }}">
+      <p style="margin:0;font-size:clamp(26px,3.4vw,52px);font-weight:500;letter-spacing:-.04em;line-height:1">Tools in their place.<br><span style="color:#A4A29A">Data in its place.</span></p>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">08 tools / 1 system</span>
+    </div>
+  </div>
+</section>
+
+<section id="work" data-screen-label="03 Case studies" style="padding:96px clamp(20px,4vw,56px) 0;border-top:1px solid #111110">
+  <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-items:end;margin-bottom:56px">
+    <span style="grid-column:span 12;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65">(03) Selected work</span>
+    <h2 style="grid-column:span 12;margin:0;font-weight:500;font-size:clamp(44px,7vw,112px);letter-spacing:-.055em;line-height:.9">Case studies</h2>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:40px;padding-bottom:24vh">
+
+    <article data-screen-label="Case 01 Tachyon Care" style="position:sticky;top:84px;min-height:74vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;padding:24px;background:#FBFAF7;border:1px solid #111110">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">01 / 05</span><span style="color:#6B6A65">Healthcare · App + Web</span></div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(40px,5.5vw,88px);letter-spacing:-.055em;line-height:.9">Tachyon Care</h3>
+          <p style="margin:0;font-size:18px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">A geriatric care app and web platform. Designed for unsteady hands, low vision, and decisions that can't go wrong.</p>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #DAD8D0;padding-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65"><span>Accessibility</span><span>Health data</span><span>Product design</span></div>
+        </div>
+      </div>
+      <div style="min-height:340px;background:repeating-linear-gradient(135deg,#ECEAE4 0 8px,#E4E2DB 8px 16px);display:flex;align-items:flex-end;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">[ app + web screens ]</div>
+    </article>
+
+    <article data-screen-label="Case 02 Casey" style="position:sticky;top:108px;min-height:74vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;padding:24px;background:#111110;color:#F2F1EC;border:1px solid #111110">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#FF5A4E">02 / 05</span><span style="color:#A4A29A">Legal · Product</span></div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(40px,5.5vw,88px);letter-spacing:-.055em;line-height:.9">Casey</h3>
+          <p style="margin:0;font-size:18px;line-height:1.4;color:#CFCDC6;max-width:38ch;text-wrap:pretty">Legal workflows where one wrong click can cost a case. Privileged data, strict structure, no guesswork.</p>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #3A3936;padding-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A"><span>Legal tech</span><span>Privacy</span><span>UX</span></div>
+        </div>
+      </div>
+      <div style="min-height:340px;background:repeating-linear-gradient(135deg,#1C1C1A 0 8px,#232321 8px 16px);display:flex;align-items:flex-end;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8A8882">[ product screens ]</div>
+    </article>
+
+    <article data-screen-label="Case 03 Shift Partner" style="position:sticky;top:132px;min-height:74vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;padding:24px;background:#E0362C;color:#FFFFFF;border:1px solid #E0362C">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span>03 / 05</span><span>Redesign · Usability</span></div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(40px,5.5vw,88px);letter-spacing:-.055em;line-height:.9">Shift Partner</h3>
+          <p style="margin:0;font-size:18px;line-height:1.4;max-width:38ch;text-wrap:pretty">An existing product, taken apart and rebuilt. Same purpose, far better usability.</p>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.45);padding-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px"><span>Before / After</span><span>Usability</span><span>UI</span></div>
+        </div>
+      </div>
+      <div style="min-height:340px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.10) 0 8px,rgba(255,255,255,.04) 8px 16px);display:flex;align-items:flex-end;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px">[ before → after ]</div>
+    </article>
+
+    <article data-screen-label="Case 04 Cardiabridge" style="position:sticky;top:156px;min-height:74vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;padding:24px;background:#FBFAF7;border:1px solid #111110">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">04 / 05</span><span style="color:#6B6A65">Branding · Identity</span></div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(40px,5.5vw,88px);letter-spacing:-.055em;line-height:.9">Cardiabridge</h3>
+          <p style="margin:0;font-size:18px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">A brand identity built to earn trust in cardiac care. Calm, clinical, still human.</p>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #DAD8D0;padding-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65"><span>Logo</span><span>Visual system</span><span>Guidelines</span></div>
+        </div>
+      </div>
+      <div style="min-height:340px;background:repeating-linear-gradient(135deg,#ECEAE4 0 8px,#E4E2DB 8px 16px);display:flex;align-items:flex-end;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">[ brand system ]</div>
+    </article>
+
+    <article data-screen-label="Case 05 IDIM" style="position:sticky;top:180px;min-height:74vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;padding:24px;background:#E9E7E0;border:1px solid #111110">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em"><span style="color:#E0362C">05 / 05</span><span style="color:#6B6A65">Category</span></div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <h3 style="margin:0;font-weight:500;font-size:clamp(40px,5.5vw,88px);letter-spacing:-.055em;line-height:.9">IDIM</h3>
+          <p style="margin:0;font-size:18px;line-height:1.4;color:#3E3D39;max-width:38ch;text-wrap:pretty">One line on what IDIM is and what you changed.</p>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #CFCDC5;padding-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65"><span>Tag</span><span>Tag</span></div>
+        </div>
+      </div>
+      <div style="min-height:340px;background:repeating-linear-gradient(135deg,#DFDDD5 0 8px,#D8D6CE 8px 16px);display:flex;align-items:flex-end;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">[ project visual ]</div>
+    </article>
+
+  </div>
+</section>
+
+<section id="creative" data-screen-label="04 Creative mind" style="min-height:100vh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-content:center;padding:120px clamp(20px,4vw,56px);border-top:1px solid #111110">
+  <span style="grid-column:span 12;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#6B6A65;margin-bottom:24px">(04) The creative mind</span>
+  <h2 style="grid-column:1 / -1;margin:0;font-weight:500;font-size:clamp(48px,9vw,148px);letter-spacing:-.055em;line-height:.88">Off the clock,<br><span style="color:#A4A29A">on the canvas.</span></h2>
+  <div style="grid-column:1 / -1;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-top:48px;border-top:1px solid #111110;padding-top:20px">
+    <p style="margin:0;font-size:18px;line-height:1.4;color:#3E3D39;max-width:34ch">A small collection of personal work. No briefs, no clients.</p>
+    <button onClick="{{ openGallery }}" style="display:flex;align-items:center;gap:40px;padding:18px 22px;border:1px solid #111110;background:#111110;color:#F2F1EC;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer" style-hover="background:#E0362C;border-color:#E0362C">Enter the gallery<span>→</span></button>
+  </div>
+</section>
+
+<section id="connect" data-screen-label="05 Connect" style="padding:96px clamp(20px,4vw,56px) 32px;background:#111110;color:#F2F1EC;display:flex;flex-direction:column;gap:64px">
+  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#A4A29A">(05) Connect</span>
+  <h2 style="margin:0;font-weight:500;font-size:clamp(56px,12vw,200px);letter-spacing:-.06em;line-height:.85">Let's connect<span style="color:#E0362C">.</span></h2>
+  <div style="display:flex;flex-direction:column">
+    <a href="https://www.linkedin.com/" target="_blank" style="display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;border-top:1px solid #3A3936;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em" style-hover="color:#FF5A4E"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">A</span><span>LinkedIn</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">↗</span></a>
+    <a href="#" download="" style="display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;border-top:1px solid #3A3936;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em" style-hover="color:#FF5A4E"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">B</span><span>Résumé</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">PDF ↓</span></a>
+    <a href="mailto:hello@akhil.design" style="display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;border-top:1px solid #3A3936;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em" style-hover="color:#FF5A4E"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">C</span><span>hello@akhil.design</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">Mail →</span></a>
+    <a href="mailto:hello@akhil.design?subject=Phone%20number%20request" style="display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:baseline;padding:24px 0;border-top:1px solid #3A3936;border-bottom:1px solid #3A3936;color:#F2F1EC;font-size:clamp(24px,3vw,44px);letter-spacing:-.03em" style-hover="color:#FF5A4E"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A">D</span><span>Phone</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">On request →</span></a>
+  </div>
+  <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A4A29A"><span>© 2026 Akhil</span><span>Designed with privacy in mind</span></div>
+</section>
+
+<sc-if value="{{ galleryOpen }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Gallery" style="position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse 60% 70% at 50% 42%,#FFFFFF 0%,#ECEAE4 55%,#DCDAD2 100%);display:flex;flex-direction:column">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(20px,4vw,56px);border-bottom:1px solid #CFCDC5;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase">
+      <span>The Akhil Collection · Room 01</span>
+      <button onClick="{{ closeGallery }}" style="padding:8px 14px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">Close ✕</button>
+    </div>
+    <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:clamp(24px,5vw,72px);padding:32px clamp(20px,4vw,56px);flex-wrap:wrap">
+      <div style="padding:clamp(14px,1.6vw,24px);background:#FFFFFF;border:1px solid #D2D0C8;box-shadow:0 30px 60px -20px rgba(0,0,0,.28),0 8px 18px -8px rgba(0,0,0,.18)">
+        <div style="width:{{ art.w }};aspect-ratio:{{ art.ratio }};max-height:58vh;background:repeating-linear-gradient(135deg,#ECEAE4 0 8px,#E3E1DA 8px 16px);display:flex;align-items:flex-end;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65">[ artwork {{ art.num }} ]</div>
+      </div>
+      <div style="width:220px;display:flex;flex-direction:column;gap:10px;padding:16px;background:#FBFAF7;border:1px solid #CFCDC5">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#E0362C">No. {{ art.num }}</span>
+        <span style="font-size:20px;font-weight:500;letter-spacing:-.02em;line-height:1.1">{{ art.title }}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6B6A65;line-height:1.5">{{ art.medium }}<br>{{ art.year }}</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px clamp(20px,4vw,56px);border-top:1px solid #CFCDC5;font-family:'IBM Plex Mono',monospace;font-size:12px">
+      <button onClick="{{ prevArt }}" style="padding:10px 16px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">← Prev</button>
+      <span>{{ artCounter }}</span>
+      <button onClick="{{ nextArt }}" style="padding:10px 16px;border:1px solid #111110;background:transparent;font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer" style-hover="background:#111110;color:#F2F1EC">Next →</button>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGridLines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;floatIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Toolkit motion&quot;}}">
+const TOOLS = ['Claude','Figma','Canva','Higgsfield','VS Code','Godot','Affinity','CapCut'];
+const SCATTER = [[18,28],[72,22],[40,68],[86,58],[12,72],[56,36],[30,44],[66,80]];
+const ART = [
+  {title:'Untitled I', medium:'Medium', year:'Year', ratio:'4 / 5'},
+  {title:'Untitled II', medium:'Medium', year:'Year', ratio:'1 / 1'},
+  {title:'Untitled III', medium:'Medium', year:'Year', ratio:'3 / 4'},
+  {title:'Untitled IV', medium:'Medium', year:'Year', ratio:'5 / 4'},
+  {title:'Untitled V', medium:'Medium', year:'Year', ratio:'2 / 3'},
+  {title:'Untitled VI', medium:'Medium', year:'Year', ratio:'4 / 5'}
+];
+const clamp = v => Math.max(0, Math.min(1, v));
+const ease = v => v * v * (3 - 2 * v);
+const lerp = (a, b, e) => a + (b - a) * e;
+
+class Component extends DCLogic {
+  state = { p: 0, t: 0, w: 1200, h: 800, galleryOpen: false, idx: 0 };
+  toolsRef = React.createRef();
+
+  componentDidMount() {
+    this.onScroll = () => {
+      const el = this.toolsRef.current; if (!el) return;
+      const r = el.getBoundingClientRect();
+      const p = clamp(-r.top / Math.max(1, r.height - innerHeight));
+      this.visible = r.top < innerHeight && r.bottom > 0;
+      if (Math.abs(p - this.state.p) > 0.001 || this.state.w !== innerWidth) this.setState({ p, w: innerWidth, h: innerHeight });
+    };
+    this.onKey = e => {
+      if (!this.state.galleryOpen) return;
+      if (e.key === 'Escape') this.setState({ galleryOpen: false });
+      if (e.key === 'ArrowRight') this.step(1);
+      if (e.key === 'ArrowLeft') this.step(-1);
+    };
+    const loop = () => {
+      if (this.visible && this.state.p < 0.75) this.setState({ t: performance.now() / 1000 });
+      this.raf = requestAnimationFrame(loop);
+    };
+    addEventListener('scroll', this.onScroll, { passive: true });
+    addEventListener('resize', this.onScroll);
+    addEventListener('keydown', this.onKey);
+    this.onScroll();
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() {
+    removeEventListener('scroll', this.onScroll);
+    removeEventListener('resize', this.onScroll);
+    removeEventListener('keydown', this.onKey);
+    cancelAnimationFrame(this.raf);
+  }
+  step(d) { this.setState(s => ({ idx: (s.idx + d + ART.length) % ART.length })); }
+
+  renderVals() {
+    const { p, t, w, h, idx } = this.state;
+    const amp = this.props.floatIntensity ?? 1;
+    const e = ease(clamp((p - 0.3) / 0.4));
+    const narrow = w < 760;
+    const cols = narrow ? 2 : 4, rows = Math.ceil(TOOLS.length / cols);
+    const cardW = narrow ? Math.min(160, w * 0.4) : Math.min(220, w * 0.17);
+    const gapX = (cardW + 16) / w * 100;
+    const gapY = (narrow ? 120 : 130) / h * 100;
+    const tools = TOOLS.map((name, i) => {
+      const [bx, by] = SCATTER[i], ph = i * 1.7;
+      const fx = bx + Math.sin(t * 0.35 + ph) * 4 * amp;
+      const fy = by + Math.cos(t * 0.28 + ph) * 5 * amp;
+      const col = i % cols, row = Math.floor(i / cols);
+      const gx = 50 + (col - (cols - 1) / 2) * gapX;
+      const gy = 50 + (row - (rows - 1) / 2) * gapY;
+      const rot = Math.sin(t * 0.4 + ph) * 10 * amp * (1 - e);
+      return {
+        name, num: String(i + 1).padStart(2, '0'),
+        left: lerp(fx, gx, e) + '%', top: lerp(fy, gy, e) + '%',
+        transform: `translate(-50%,-50%) rotate(${rot}deg)`,
+        opacity: clamp((p - 0.02) / 0.1), width: cardW + 'px'
+      };
+    });
+    const a = ART[idx];
+    return {
+      toolsRef: this.toolsRef,
+      tools,
+      silenceOp: 1 - clamp(p / 0.08),
+      orgOp: clamp((p - 0.7) / 0.12),
+      showGridLines: !!this.props.showGridLines,
+      galleryOpen: this.state.galleryOpen,
+      openGallery: () => this.setState({ galleryOpen: true }),
+      closeGallery: () => this.setState({ galleryOpen: false }),
+      prevArt: () => this.step(-1),
+      nextArt: () => this.step(1),
+      art: { ...a, num: String(idx + 1).padStart(2, '0'), w: narrow ? '68vw' : 'min(38vw, 460px)' },
+      artCounter: `${String(idx + 1).padStart(2, '0')} / ${String(ART.length).padStart(2, '0')}`
+    };
+  }
+}
+</script>
+</body>
+</html>
